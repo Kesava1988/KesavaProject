@@ -1,0 +1,127 @@
+<!--
+Author: Kesava Sreeram T
+Date  : 9/22/2015
+-->
+<!DOCTYPE html>
+
+<!-- CSS styles for older browsers was not implemented at the moment, but can
+be implemented in the classes specified -->
+<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
+
+<!--[if (gt IE 9)|!(IE)]>
+<html lang="en">
+<![endif]-->
+
+<head xmlns="http://www.w3.org/1999/html">
+
+    <!-- adding HTML5 Tags to browsers before IE 9 (ploy fill)  -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="UTF-8">
+
+    <!-- In order to make sure that the content is sized to fit the screen, so we'll add a viewport meta tag -->
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
+
+    <title>TKS Chain of Hotels</title>
+
+    <!--  Boot strap styles -->
+    <!-- Latest compiled and minified CSS
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    -->
+    <!-- animation styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css">
+
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Other styles for website -->
+    <link rel="stylesheet" href="../CSS/Fonts.css" />
+    <link rel="stylesheet" href="../CSS/Styles.css" />
+    <link rel="stylesheet" href="../CSS/RWD.css" />
+
+
+</head>
+<body>
+<!-- Contains all the content of the web page -->
+<div class = "container">
+    <header>
+        <nav  class = "navbar-header maxDisplay" role="navigation">
+            <div class="nav-container">
+                <ul class="clearfix">
+                    <li class="logo">
+                        <a href="../../index.html" role = "button" class = "animated bounceInLeft">Kesava Foods</a>
+                    </li>
+                    <li class = "nav-menu" role="presentation">
+                        <a href="#" role = "button">Login</a>
+                    </li>
+                    <li class = "nav-menu" role="presentation">
+                        <a href="../../index.html#aboutUs" role = "button">About US</a>
+                    </li>
+                    <li class = "nav-menu" role="presentation">
+                        <a href="../../index.html#reservation" role = "button">Make Reservation</a>
+                    </li>
+                    <li class = "nav-menu" role="presentation">
+                        <a href="../../index.html#menu" role = "button">Menu</a>
+                    </li>
+                    <li class = "active nav-menu" role="presentation">
+                        <a href="../../index.html#" role = "button">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <nav  class = "navbar-header mediumDisplay" role="navigation">
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="../../index.html#" role = "button" class = "animated bounceInLeft">Kesava Foods</a>
+                </div>
+                <div class="title tooltip"><a href="../../index.html#" role = "button">Home</a></div>
+                <ul class ="clearfix menu-short">
+                    <li class = "nav-menu" role="presentation">
+                        <a href="#" role = "button">Login</a>
+                    </li>
+                    <li class = "nav-menu" role="presentation">
+                        <a href="../../index.html#aboutUs" role = "button">About US</a>
+                    </li>
+                    <li class = "nav-menu" role="presentation">
+                        <a href="../../index.html#reservation" role = "button">Make Reservation</a>
+                    </li>
+                    <li class = "nav-menu" role="presentation">
+                        <a href="../../index.html#menu" role = "button">Menu</a>
+                    </li>
+                    <li class = "active nav-menu" role="presentation">
+                        <a href="../../index.html#" role = "button">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+        <section id="login-info">
+            <h1>Enter login information</h1>
+            <section class = "col-sm-7">
+                <section class = "form-info">
+                    <label for="name">User name</label>
+                    <input type="text" class = "form-input" name="name" id="name" placeholder="Enter user name" title="Please enter your user name" required>
+                </section>
+                <section class="form-info">
+                    <label>Password</label>
+                    <input type="password" class = "form-input" name="email" id="password" placeholder="Enter password" title="Please enter your password" required>
+                </section>
+                <section class = "form-info">
+                    <button name="submit" type="submit" id="submit" class="button" ><a href="../../index.html">Submit</a></button>
+                </section>
+            </section>
+        </section>
+</div>
+<!--  Boot strap styles -->
+<!-- Latest compiled and minified JavaScript
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+-->
+<!-- Other custome scripts -->
+<script src="../JS/Scripts.js"></script>
+</body>
+</html>

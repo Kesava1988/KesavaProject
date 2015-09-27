@@ -1,0 +1,198 @@
+<!--
+Author: Kesava Sreeram T
+Date  : 9/22/2015
+-->
+<!DOCTYPE html>
+
+<!-- CSS styles for older browsers was not implemented at the moment, but can
+be implemented in the classes specified -->
+<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
+
+<!--[if (gt IE 9)|!(IE)]>
+<html lang="en">
+<![endif]-->
+
+<head xmlns="http://www.w3.org/1999/html">
+
+    <!-- adding HTML5 Tags to browsers before IE 9 (ploy fill)  -->
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="UTF-8">
+
+    <!-- In order to make sure that the content is sized to fit the screen, so we'll add a viewport meta tag -->
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1">
+
+    <title>TKS Chain of Hotels</title>
+
+    <!--  Boot strap styles -->
+    <!-- Latest compiled and minified CSS
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    -->
+    <!-- animation styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css" />
+
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Other styles for website -->
+    <link rel="stylesheet" href="Project-UI/CSS/Fonts.css" />
+    <link rel="stylesheet" href="Project-UI/CSS/Styles.css" />
+    <link rel="stylesheet" href="Project-UI/CSS/RWD.css" />
+
+
+</head>
+<body>
+    <!-- Contains all the content of the web page -->
+    <div class = "container">
+        <header>
+            <nav  class = "navbar-header maxDisplay" role="navigation">
+                <div class="nav-container">
+                    <ul class="clearfix">
+                        <li class="logo">
+                            <a href="#" role = "button" class = "animated bounceInLeft">Kesava Foods</a>
+                        </li>
+                        <li class = "nav-menu" role="presentation">
+                            <a href="Project-UI/HTML/login.html" role = "button">Login</a>
+                        </li>
+                        <li class = "nav-menu" role="presentation">
+                            <a href="#aboutUs" role = "button">About US</a>
+                        </li>
+                        <li class = "nav-menu" role="presentation">
+                            <a href="#reservation" role = "button">Make Reservation</a>
+                        </li>
+                        <li class = "nav-menu" role="presentation">
+                            <a href="#menu" role = "button">Menu</a>
+                        </li>
+                        <li class = "active nav-menu" role="presentation">
+                            <a href="#" role = "button">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <nav  class = "navbar-header mediumDisplay" role="navigation">
+                <div class="nav-container">
+                    <div class="logo">
+                                <a href="#" role = "button" class = "animated bounceInLeft">Kesava Foods</a>
+                    </div>
+                    <div class="title tooltip"><a href="#" role = "button">Home</a></div>
+                    <ul class ="clearfix menu-short">
+                        <li class = "nav-menu" role="presentation">
+                            <a href="Project-UI/HTML/login.html" role = "button">Login</a>
+                        </li>
+                        <li class = "nav-menu" role="presentation">
+                            <a href="#aboutUs" role = "button">About US</a>
+                        </li>
+                        <li class = "nav-menu" role="presentation">
+                            <a href="#reservation" role = "button">Make Reservation</a>
+                        </li>
+                        <li class = "nav-menu" role="presentation">
+                            <a href="#menu" role = "button">Menu</a>
+                        </li>
+                        <li class = "active nav-menu" role="presentation">
+                            <a href="#" role = "button">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <section class="banner">
+            <img src = "Project-UI/IMAGES/Seating.jpg" alt = "Biriyani"/>
+        </section>
+        <section id="menu" class="menu-gallery">
+            <article>
+                <h1>We serve a wide variety of dishes</h1>
+                <p>Some of our famous dishes</p>
+            </article>
+            <section><img src = "Project-UI/IMAGES/1.png" alt = ""/></section>
+            <section><img src = "Project-UI/IMAGES/2.png" alt = ""/></section>
+            <section><img src = "Project-UI/IMAGES/3.png" alt = ""/></section>
+            <section><img src = "Project-UI/IMAGES/4.png" alt = ""/></section>
+            <section><img src = "Project-UI/IMAGES/5.png" alt = ""/></section>
+            <section><img src = "Project-UI/IMAGES/6.png" alt = ""/></section>
+        </section>
+
+        <section id="reservation">
+            <h1> Like to have a table reserved?</h1>
+            <section class = "persom-info col-sm-7">
+                <section class = "form-info">
+                    <label for="name">Name</label>
+                    <input type="text" class = "form-input" name="name" id="name" placeholder="Enter name" title="Please enter your name" required>
+                </section>
+                <section class="form-info">
+                    <label for="email">Email</label>
+                    <input type="email" class = "form-input" name="email" id="email" placeholder="Enter email" title="Please enter a valid email address" required>
+                </section>
+                <section class="form-info">
+                    <label for="Date">Date</label>
+                    <input type="date" class = "form-input" name="Date" id="date" title="Please select a valid date" required>
+                </section>
+                <section class="form-info">
+                    <label>Time</label>
+                    <input type="time" class = "form-input" name="time" id="time" title="Please select a time" required>
+                </section>
+                <section class = "form-info">
+                    <button name="submit" type="submit" id="submit" class="button">Submit</button>
+                </section>
+            </section>
+            <section class = "form-contactInfo col-md-5">
+                <h1>Contact US</h1>
+                <p>
+                    TKS group of hotels<br><br>
+
+                    Some Address line<br>
+                    Some Stree Name<br>
+                    State, some City<br><br>
+
+                    Phone: +1 123 455 4321<br>
+                    Email: tks@tks.com
+                </p><br />
+            </section>
+        </section>
+
+        <section id="aboutUs">
+            <h1> What are we?</h1>
+            <p>
+            The T Kesava Sreeram (TKS) and its subsidiaries are collectively known as TKS Hotels Resorts and Palaces and is recognised as one of Asia's largest and finest hotel company.
+            </p>
+            <p>
+            TKS (luxury full-service hotels, resorts and palaces) is our flagship brand for the world's most discerning travelers seeking authentic experiences given that luxury is a way of life to which they are accustomed.
+            Spanning world-renowned landmarks, modern business hotels, idyllic beach resorts, authentic Rajput palaces and rustic safari lodges, each TKS hotel reinterprets the tradition of hospitality in a refreshingly modern way to create unique experiences and lifelong memories.
+            </p>
+
+            <h1> Testimonials </h1>
+            <article class = "testimonial">
+                <p>
+                    <b>~Larry & Kathleen Keller, Northbrook, IL.</b><br>
+                    We had the pleasure of staying at the TKS a few years ago. Everything from the valets to the rooms were wonderful! The outstanding breakfast started out our day. The Dolphin Quest was great. I only wish We were there right at this moment. We hope to be back very soon!.
+                </p>
+            </article>
+            <article class = "testimonial">
+                <p>
+                    <b>~Dr. Watson and Mrs. Watson, Vleuten, Netherlands.</b><br>
+                    We stayed at the TKS's from August 17th until August 23th. We want to thank you all for a great time, your kindness and great and friendly service. I enjoyed my spa time and felt completely relaxed. Many thanks for a wonderful time with warm regards.
+                </p>
+            </article>
+            <article class = "testimonial">
+                <p>
+                    <b>~Mary-Ellen Costa, New Rochelle, NY.</b><br>
+                    What an amazing hotel.We were greeted by Linda at the front desk with a warm friendly smile. We had booked a tour through the hotel to the Polynesian Cultural Center. Unfortunately, due to hurricane Iselle and Julio, our tour was cancelled. Between Carolyn (with two phones in her ear) and Mark, they made everything right. Instead, we took the shuttle into Waikiki and walked around town for a while. Thank you so much to everyone at the TKS for making our days with you special.
+                </p>
+            </article>
+
+        </section>
+        <footer>
+        </footer>
+    </div>
+    <!--  Boot strap styles -->
+    <!-- Latest compiled and minified JavaScript
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    -->
+    <!-- Other custome scripts -->
+    <script src="Project-UI/JS/Scripts.js"></script>
+</body>
+</html>
