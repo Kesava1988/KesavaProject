@@ -1,0 +1,93 @@
+/* From boostrap website */
+
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 768px)
+{
+
+}
+
+@media (min-width: 768px)
+{
+    .menu-gallery article, #aboutUs, #reservatio
+    {
+        float: left;
+    }
+
+    .col-sm-7
+    {
+        float: left;
+        width: 55%;
+    }
+
+    .mediumDisplay
+    {
+        visibility: visible;
+        height: auto;
+    }
+
+    .mediumDisplay .title
+    {
+        display: block;
+        max-width: 50%;
+        float: right;
+    }
+
+    .maxDisplay
+    {
+        visibility: hidden;
+        height: 0;
+    }
+}
+
+/** not needed normally but for the images in gallery this might be needed */
+@media (min-width: 800px)
+{
+    .menu-gallery section
+    {
+        width: 28%;
+    }
+}
+
+@media (min-width: 900px)
+{
+    .mediumDisplay
+    {
+        visibility: hidden;
+        height: 0;
+    }
+
+    .mediumDisplay .title, .mediumDisplay .nav-container, .mediumDisplay .logo
+    {
+        visibility: hidden;
+        height: 0;
+    }
+
+
+    .maxDisplay
+    {
+        visibility: visible;
+        height: auto;
+    }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px)
+{
+    .col-md-5
+    {
+        float: left;
+        width: 41.66666667%;
+    }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px)
+{
+    .container
+    {
+        width: 1200px;
+    }
+}
