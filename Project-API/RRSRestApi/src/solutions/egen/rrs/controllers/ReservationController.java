@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -65,6 +66,7 @@ public class ReservationController
 	
 	/**
 	 * Create a new reservation
+	 * Returns reservation with confirmation number and status
 	 */
 	@POST
 	@Path("/reserve")
@@ -74,5 +76,34 @@ public class ReservationController
 	{
 		ReservationDao rDao = new ReservationDao();
 		return rDao.createReservation(reservation);
+	}
+	
+	/**
+	 * Confirm the reservation if it is in waiting status
+	 */
+	@PUT
+	@Path("/confirm")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Reservation confirmReservation(Reservation reservation)
+	{
+		ReservationDao rDao = new ReservationDao();
+		return rDao.confirmReservation(reservation);
+	}
+	
+	/**
+	 * Edit the reservation by providing a combination of
+	 * new date, new time, new party size
+	 * @param reservation
+	 * @return reservation
+	 */
+	@PUT
+	@Path("/editreservation")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Reservation editReservation(Reservation reservation)
+	{
+		ReservationDao rDao = new ReservationDao();
+		return rDao.editReservation(reservation);
 	}
 }
