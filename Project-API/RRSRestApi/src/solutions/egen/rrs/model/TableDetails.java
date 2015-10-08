@@ -9,36 +9,10 @@ package solutions.egen.rrs.model;
  */
 public class TableDetails
 {
-	private int tableNo = -1;
-	private int tableSize = 0;
+	private int tableSize = -1;
+	private int tableId = -1;
 	private boolean isTableAvailable = false;
 	
-	/**
-	 * @param tableNo
-	 * @param tableSize
-	 * @param isTableAvailable
-	 */
-	public TableDetails(int tableNo, int tableSize, boolean isTableAvailable)
-	{
-		this.tableNo = tableNo;
-		this.tableSize = tableSize;
-		this.isTableAvailable = isTableAvailable;
-	}
-
-	/**
-	 * @return the tableNo
-	 */
-	public int getTableNo() {
-		return tableNo;
-	}
-
-	/**
-	 * @param tableNo the tableNo to set
-	 */
-	public void setTableNo(int tableNo) {
-		this.tableNo = tableNo;
-	}
-
 	/**
 	 * @return the tableSize
 	 */
@@ -65,6 +39,20 @@ public class TableDetails
 	 */
 	public void setTableAvailable(boolean isTableAvailable) {
 		this.isTableAvailable = isTableAvailable;
+	}
+
+	/**
+	 * @return the tableId
+	 */
+	public int getTableId() {
+		return tableId;
+	}
+
+	/**
+	 * @param tableId the tableId to set
+	 */
+	public void setTableId(int tableId) {
+		this.tableId = tableId;
 	}
 	
 	

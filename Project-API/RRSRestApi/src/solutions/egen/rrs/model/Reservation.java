@@ -13,31 +13,43 @@ import java.sql.Time;
 public class Reservation
 {
 	private String customerEmail = "";
+	private String first_name = "";
+	private String last_name = "";
+	private String phone = "";
 	private int confNo = -1;
 	private Date date = null;
 	private Time time = null;
 	private int partySize = 0;
-	private int status = -1;
+	private int status = 0;
 	private int tableID = -1;
 	
 	/**
 	 * @param customerEmail
+	 * @param first_name
+	 * @param last_name
+	 * @param phone
+	 * @param confNo
 	 * @param date
 	 * @param time
 	 * @param partySize
 	 */
-	public Reservation(String customerEmail, Date date, Time time, int partySize)
-	{
+	public Reservation(String customerEmail, String first_name, String last_name, 
+			String phone, int confNo, Date date, Time time, int partySize) {
 		this.customerEmail = customerEmail;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.phone = phone;
 		this.date = date;
 		this.time = time;
 		this.partySize = partySize;
 	}
-	
-	
 
+	
 	/**
 	 * @param customerEmail
+	 * @param first_name
+	 * @param last_name
+	 * @param phone
 	 * @param confNo
 	 * @param date
 	 * @param time
@@ -45,9 +57,13 @@ public class Reservation
 	 * @param status
 	 * @param tableID
 	 */
-	public Reservation(String customerEmail, int confNo, Date date, Time time, int partySize, int status, int tableID)
-	{
+	public Reservation(String customerEmail, String first_name, 
+			String last_name, String phone, int confNo, Date date,
+			Time time, int partySize, int status, int tableID) {
 		this.customerEmail = customerEmail;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.phone = phone;
 		this.confNo = confNo;
 		this.date = date;
 		this.time = time;
@@ -55,7 +71,6 @@ public class Reservation
 		this.status = status;
 		this.tableID = tableID;
 	}
-
 
 
 	/**
@@ -74,6 +89,54 @@ public class Reservation
 		this.customerEmail = customerEmail;
 	}
 
+
+
+	/**
+	 * @return the first_name
+	 */
+	public String getFirst_name() {
+		return first_name;
+	}
+
+
+	/**
+	 * @param first_name the first_name to set
+	 */
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
+
+
+	/**
+	 * @return the last_name
+	 */
+	public String getLast_name() {
+		return last_name;
+	}
+
+
+	/**
+	 * @param last_name the last_name to set
+	 */
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+
+
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 
 	/**

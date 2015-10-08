@@ -61,14 +61,23 @@ public class DBUtil
 	public static void releaseResources(Connection con, PreparedStatement ps, ResultSet rs)
 	{
 		try {
+			releaseResources(ps, rs);
+			if (con != null) {
+				con.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void releaseResources(PreparedStatement ps, ResultSet rs)
+	{
+		try {
 			if (ps != null) {
 				ps.close();
 			}
 			if (rs != null) {
 				rs.close();
-			}
-			if (con != null) {
-				con.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
