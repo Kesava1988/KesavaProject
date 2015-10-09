@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,7 @@ public class ReservationDao
 		String last_name = "";
 		String phone = "";
 		int confNo = 0;
-		Date date = null;
-		Time time = null;
+		Timestamp datetime = null;
 		int partySize = 0;
 		int status = 0;
 		int tableID = 0;
@@ -55,14 +55,13 @@ public class ReservationDao
 			{
 				customerEmail = rs.getString("cust_email");
 				confNo = rs.getInt("conf_no");
-				date = rs.getDate("date");
-				time = rs.getTime("time");
+				datetime = rs.getTimestamp("datetime");
 				partySize = rs.getInt("party_size");
 				status = rs.getInt("status");
 				tableID = rs.getInt("table_id");
 				reservation = new Reservation(
 						customerEmail, first_name, last_name, phone, confNo,
-						date, time, partySize, status, tableID);
+						datetime, partySize, status, tableID);
 				result.add(reservation);
 			}
 		}
@@ -83,7 +82,7 @@ public class ReservationDao
 	 * @return List of reservations
 	 */
 
-	public List<Reservation> getAllReservations(Date onDate)
+	public List<Reservation> getAllReservations(Timestamp datetime)
 	{
 		List<Reservation> result = null;
 		Connection con = DBUtil.getConnection();
@@ -93,8 +92,7 @@ public class ReservationDao
 		String last_name = "";
 		String phone = "";
 		int confNo = 0;
-		Date date = null;
-		Time time = null;
+		Timestamp time = null;
 		int partySize = 0;
 		int status = 0;
 		int tableID = 0;
@@ -103,22 +101,21 @@ public class ReservationDao
 		try
 		{
 			result = new ArrayList<Reservation>();
-			ps = con.prepareStatement("Select * from reservations where date = ?");
-			ps.setDate(1, onDate);
+			ps = con.prepareStatement("Select * from reservations where datetime = ?");
+			ps.setTimestamp(1, datetime);
 			rs = ps.executeQuery();
 			
 			while(rs.next())
 			{
 				customerEmail = rs.getString("cust_email");
 				confNo = rs.getInt("conf_no");
-				date = rs.getDate("date");
-				time = rs.getTime("time");
+				time = rs.getTimestamp("datetime");
 				partySize = rs.getInt("party_size");
 				status = rs.getInt("status");
 				tableID = rs.getInt("table_id");
 				reservation = new Reservation(
 						customerEmail, first_name, last_name, phone, confNo,
-						date, time, partySize, status, tableID);
+						time, partySize, status, tableID);
 				result.add(reservation);
 			}
 		}
@@ -149,8 +146,7 @@ public class ReservationDao
 		String first_name = "";
 		String last_name = "";
 		String phone = "";
-		Date date = null;
-		Time time = null;
+		Timestamp time = null;
 		int partySize = 0;
 		int status = 0;
 		int tableID = 0;
@@ -166,14 +162,13 @@ public class ReservationDao
 			while(rs.next())
 			{
 				customerEmail = rs.getString("cust_email");
-				date = rs.getDate("date");
-				time = rs.getTime("time");
+				time = rs.getTimestamp("datetime");
 				partySize = rs.getInt("party_size");
 				status = rs.getInt("status");
 				tableID = rs.getInt("table_id");
 				result = new Reservation(
 						customerEmail, first_name, last_name, phone, conf_no,
-						date, time, partySize, status, tableID);
+						time, partySize, status, tableID);
 			}
 		}
 		catch (SQLException e)
@@ -228,8 +223,7 @@ public class ReservationDao
 		Connection con = DBUtil.getConnection();
 		String customerEmail = reservation.getCustomerEmail();
 		int confNo;
-		Date date = reservation.getDate();
-		Time time = reservation.getTime();
+		Timestamp time = reservation.getTime();
 		int partySize = reservation.getPartySize();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -238,13 +232,12 @@ public class ReservationDao
 			//First create a reservation with default status and table ids
 			//Then update based on the table availability.
 			ps = con.prepareStatement("INSERT INTO reservations "
-					+ "(cust_email, date, time, party_size) "
-					+ "VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+					+ "(cust_email, datetime, party_size) "
+					+ "VALUES (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, customerEmail);
-			ps.setDate(2, date);
-			ps.setTime(3, time);
-			ps.setInt(4, partySize);
-			ps.executeQuery();
+			ps.setTimestamp(2, time);
+			ps.setInt(3, partySize);
+			ps.execute();
 			rs = ps.getGeneratedKeys();
 			
 			//Reservation is created and a confirmation number is created
@@ -285,7 +278,7 @@ public class ReservationDao
 //			ps = con.prepareStatement("UPDATE reservations SET confirmed = ? WHERE conf_no = ?", PreparedStatement.RETURN_GENERATED_KEYS);
 //			ps.setInt(1, 1);
 //			ps.setInt(2, confNo);
-//			ps.executeQuery();
+//			ps.execute();
 //			
 //			rs = ps.getGeneratedKeys();
 //			
@@ -356,8 +349,7 @@ public class ReservationDao
 		ResultSet rs = null;
 		String customerEmail = reservation.getCustomerEmail();
 		int confNo = reservation.getConfNo();
-		Date date = reservation.getDate();
-		Time time = reservation.getTime();
+		Timestamp time = reservation.getTime();
 		int partySize = reservation.getPartySize();
 		int status = reservation.getStatus();
 		int tableID = reservation.getTableID();
@@ -366,17 +358,16 @@ public class ReservationDao
 			//First create a reservation with default status and table ids
 			//Then update based on the table availability.
 			ps = con.prepareStatement("UPDATE reservations SET cust_email = ?,"
-					+ "date = ?, time = ?, party_size = ?, status = ?,"
+					+ "datetime = ?, party_size = ?, status = ?,"
 					+ " table_id = ? WHERE conf_no = ?",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, customerEmail);
-			ps.setDate(2, date);
-			ps.setTime(3, time);
-			ps.setInt(4, partySize);
-			ps.setInt(5, status);
-			ps.setInt(6, tableID);
-			ps.setInt(7, confNo);
-			ps.executeQuery();
+			ps.setTimestamp(2, time);
+			ps.setInt(3, partySize);
+			ps.setInt(4, status);
+			ps.setInt(5, tableID);
+			ps.setInt(6, confNo);
+			ps.execute();
 		}
 		catch (SQLException e)
 		{
@@ -403,7 +394,7 @@ public class ReservationDao
 			//Then update based on the table availability.
 			ps = con.prepareStatement("DELETE from reservations WHERE conf_no = ?");
 			ps.setInt(1, conf_no);
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{

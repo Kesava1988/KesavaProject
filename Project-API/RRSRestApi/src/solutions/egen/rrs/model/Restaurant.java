@@ -3,7 +3,7 @@
  */
 package solutions.egen.rrs.model;
 
-import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  * @author Kesava
@@ -12,8 +12,8 @@ import java.sql.Time;
 public class Restaurant
 {
 	private String name = "";
-	private Time open_time = null;
-	private Time close_time = null;
+	private Timestamp open_time = null;
+	private Timestamp close_time = null;
 	private String address1 = "";
 	private String address2 = "";
 	private String city = "";
@@ -45,31 +45,32 @@ public class Restaurant
 		this.name = name;
 	}
 
+	
 	/**
 	 * @return the open_time
 	 */
-	public Time getOpen_time() {
+	public Timestamp getOpen_time() {
 		return open_time;
 	}
 
 	/**
 	 * @param open_time the open_time to set
 	 */
-	public void setOpen_time(Time open_time) {
+	public void setOpen_time(Timestamp open_time) {
 		this.open_time = open_time;
 	}
 
 	/**
 	 * @return the close_time
 	 */
-	public Time getClose_time() {
+	public Timestamp getClose_time() {
 		return close_time;
 	}
 
 	/**
 	 * @param close_time the close_time to set
 	 */
-	public void setClose_time(Time close_time) {
+	public void setClose_time(Timestamp close_time) {
 		this.close_time = close_time;
 	}
 

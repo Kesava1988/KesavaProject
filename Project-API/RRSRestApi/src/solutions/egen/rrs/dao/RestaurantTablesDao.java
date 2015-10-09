@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.HashMap;
 
 import solutions.egen.rrs.model.Reservation;
@@ -39,8 +40,7 @@ public class RestaurantTablesDao
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Date date = reservation.getDate();
-		Time time = reservation.getTime();
+		Timestamp time = reservation.getTime();
 		int partySize = reservation.getPartySize();
 		HashMap<Integer, Integer> tablesAssigned = new HashMap<>();
 		TableHelper tHelper = new TableHelper();
@@ -53,11 +53,10 @@ public class RestaurantTablesDao
 			
 			//Get all assigned tables with size >= party size
 			ps = con.prepareStatement("SELECT table_size, COUNT(table_size) from tables_assigned "
-					+ "where (date = ? and time = ? and table_size >= ?) "
+					+ "where (datetime = ? and table_size >= ?) "
 					+ "group by table_size order by table_size");
-			ps.setDate(1, date);
-			ps.setTime(2, time);
-			ps.setInt(3, partySize);
+			ps.setTimestamp(1, time);
+			ps.setInt(2, partySize);
 			rs = ps.executeQuery();			
 			
 			while(rs.next())
@@ -108,14 +107,13 @@ public class RestaurantTablesDao
 			if(isTentative == 1) //If tentative we dont need table id
 			{
 				ps = con.prepareStatement("INSERT INTO tables_assigned"
-						+ " (table_size, conf_no, is_tentative, date, time, "
+						+ " (table_size, conf_no, is_tentative, datetime, "
 						+ "over_assigned) VALUES (?,?,?,?,?,?)");
 				ps.setInt(1, tableSize);
 				ps.setInt(2, reservation.getConfNo());
 				ps.setInt(3, isTentative);
-				ps.setDate(4, reservation.getDate());
-				ps.setTime(5, reservation.getTime());
-				ps.setInt(6, isOverAssigned);
+				ps.setTimestamp(4, reservation.getTime());
+				ps.setInt(5, isOverAssigned);
 				rs = ps.executeQuery();	
 				result = new TableDetails();
 				result.setTableAvailable(true);
@@ -130,12 +128,11 @@ public class RestaurantTablesDao
 						+ "(restaurant_tables.table_size = ?) AND"
 						+ "restaurant_tables.table_id  NOT IN "
 						+ "(SELECT tables_assigned.table_id from tables_assigned"
-						+ "where (tables_assigned.date = ? and tables_assigned.time = ?"
+						+ "where (tables_assigned.datetime = ?"
 						+ "and tables_assigned.table_size = ? )  ) ) LIMIT 1");
 				ps.setInt(1, tableSize);
-				ps.setDate(2, reservation.getDate());
-				ps.setTime(3, reservation.getTime());
-				ps.setInt(4, tableSize);
+				ps.setTimestamp(2, reservation.getTime());
+				ps.setInt(3, tableSize);
 				rs = ps.executeQuery();	
 				
 				tableId = rs.getInt("table_id");
@@ -147,10 +144,9 @@ public class RestaurantTablesDao
 				ps.setInt(1, tableSize);
 				ps.setInt(2, reservation.getConfNo());
 				ps.setInt(3, isTentative);
-				ps.setDate(4, reservation.getDate());
-				ps.setTime(5, reservation.getTime());
-				ps.setInt(6, tableId);
-				ps.setInt(7, isOverAssigned);
+				ps.setTimestamp(4, reservation.getTime());
+				ps.setInt(5, tableId);
+				ps.setInt(6, isOverAssigned);
 				rs = ps.executeQuery();
 				
 				result = new TableDetails();
@@ -177,7 +173,7 @@ public class RestaurantTablesDao
 		Connection con = DBUtil.getConnection();
 		int confNo = reservation.getConfNo();
 		Date date = reservation.getDate();
-		Time time = reservation.getTime();
+		Timestamp time = reservation.getTime();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try
@@ -186,7 +182,7 @@ public class RestaurantTablesDao
 					+ "(conf_no = ? AND date = ? AND time = ?)");
 			ps.setInt(1, confNo);
 			ps.setDate(2, date);
-			ps.setTime(3, time);
+			ps.setTimestamp(3, time);
 			rs = ps.executeQuery();
 		}
 		catch (SQLException e)

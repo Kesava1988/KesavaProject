@@ -4,7 +4,7 @@
 package solutions.egen.rrs.model;
 
 import java.sql.Date;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  * @author Kesava
@@ -17,8 +17,7 @@ public class Reservation
 	private String last_name = "";
 	private String phone = "";
 	private int confNo = -1;
-	private Date date = null;
-	private Time time = null;
+	private String datetime = "";
 	private int partySize = 0;
 	private int status = 0;
 	private int tableID = -1;
@@ -34,13 +33,12 @@ public class Reservation
 	 * @param partySize
 	 */
 	public Reservation(String customerEmail, String first_name, String last_name, 
-			String phone, int confNo, Date date, Time time, int partySize) {
+			String phone, int confNo, Timestamp time, int partySize) {
 		this.customerEmail = customerEmail;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.phone = phone;
-		this.date = date;
-		this.time = time;
+		this.datetime = time;
 		this.partySize = partySize;
 	}
 
@@ -58,15 +56,14 @@ public class Reservation
 	 * @param tableID
 	 */
 	public Reservation(String customerEmail, String first_name, 
-			String last_name, String phone, int confNo, Date date,
-			Time time, int partySize, int status, int tableID) {
+			String last_name, String phone, int confNo,
+			Timestamp time, int partySize, int status, int tableID) {
 		this.customerEmail = customerEmail;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.phone = phone;
 		this.confNo = confNo;
-		this.date = date;
-		this.time = time;
+		this.datetime = time;
 		this.partySize = partySize;
 		this.status = status;
 		this.tableID = tableID;
@@ -155,40 +152,18 @@ public class Reservation
 		this.confNo = confNo;
 	}
 
-
-
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-
-
 	/**
 	 * @return the time
 	 */
-	public Time getTime() {
-		return time;
+	public Timestamp getTime() {
+		return datetime;
 	}
-
-
 
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(Time time) {
-		this.time = time;
+	public void setTime(Timestamp time) {
+		this.datetime = time;
 	}
 
 

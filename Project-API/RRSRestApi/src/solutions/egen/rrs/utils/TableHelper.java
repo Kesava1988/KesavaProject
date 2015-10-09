@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.Set;
 
 import solutions.egen.rrs.dao.RestaurantTablesDao;
 import solutions.egen.rrs.model.Reservation;

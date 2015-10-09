@@ -180,7 +180,7 @@ public class CustomerDao
 			ps.setString(2, customer.getFirstName());
 			ps.setString(3, customer.getLastName());
 			ps.setString(4, customer.getPhone());
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{
@@ -215,7 +215,7 @@ public class CustomerDao
 			ps.setString(2, customer.getLastName());
 			ps.setString(3, customer.getPhone());
 			ps.setString(4, customer.getEmail());
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{
@@ -245,7 +245,7 @@ public class CustomerDao
 			ps = con.prepareStatement("DELETE FROM customer_details WHERE "
 					+ "email = ?");
 			ps.setString(1, email);
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{

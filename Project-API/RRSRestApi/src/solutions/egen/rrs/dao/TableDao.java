@@ -84,7 +84,7 @@ public class TableDao
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, table_size);
 			ps.setInt(2, restId);
-			ps.executeQuery();
+			ps.execute();
 			rs = ps.getGeneratedKeys();
 			
 			if(rs.next())
@@ -130,7 +130,7 @@ public class TableDao
 					+ "WHERE table_id = ?", 
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, tableId);
-			ps.executeQuery();
+			ps.execute();
 			rs = ps.getGeneratedKeys();
 		}
 		catch (SQLException e)

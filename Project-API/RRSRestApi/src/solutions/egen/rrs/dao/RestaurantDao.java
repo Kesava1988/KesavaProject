@@ -40,8 +40,8 @@ public class RestaurantDao
 			{
 				restaurant = new Restaurant();
 				restaurant.setName(rs.getString("name"));
-				restaurant.setOpen_time(rs.getTime("open_time"));
-				restaurant.setClose_time(rs.getTime("close_time"));
+				restaurant.setOpen_time(rs.getTimestamp("open_time"));
+				restaurant.setClose_time(rs.getTimestamp("close_time"));
 				restaurant.setAddress1(rs.getString("address1"));
 				restaurant.setAddress2(rs.getString("address2"));
 				restaurant.setCity(rs.getString("city"));
@@ -91,8 +91,8 @@ public class RestaurantDao
 			if(rs.next())
 			{
 				result.setName(rs.getString("name"));
-				result.setOpen_time(rs.getTime("open_time"));
-				result.setClose_time(rs.getTime("close_time"));
+				result.setOpen_time(rs.getTimestamp("open_time"));
+				result.setClose_time(rs.getTimestamp("close_time"));
 				result.setAddress1(rs.getString("address1"));
 				result.setAddress2(rs.getString("address2"));
 				result.setCity(rs.getString("city"));
@@ -154,8 +154,8 @@ public class RestaurantDao
 					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 					, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, restaurant.getName());
-			ps.setTime(2, restaurant.getOpen_time());
-			ps.setTime(3, restaurant.getClose_time());
+			ps.setTimestamp(2, restaurant.getOpen_time());
+			ps.setTimestamp(3, restaurant.getClose_time());
 			ps.setString(4, restaurant.getAddress1());
 			ps.setString(5, restaurant.getAddress2());
 			ps.setString(6, restaurant.getCity());
@@ -169,7 +169,7 @@ public class RestaurantDao
 			ps.setInt(14, restaurant.getTable_6());
 			ps.setInt(15, restaurant.getTable_8());
 			ps.setInt(16, restaurant.getAUTO_ASSIGN());
-			ps.executeQuery();
+			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next())
 			{
@@ -222,8 +222,8 @@ public class RestaurantDao
 					+ "WHERE id = ?",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, restaurant.getName());
-			ps.setTime(2, restaurant.getOpen_time());
-			ps.setTime(3, restaurant.getClose_time());
+			ps.setTimestamp(2, restaurant.getOpen_time());
+			ps.setTimestamp(3, restaurant.getClose_time());
 			ps.setString(4, restaurant.getAddress1());
 			ps.setString(5, restaurant.getAddress2());
 			ps.setString(6, restaurant.getCity());
@@ -237,7 +237,7 @@ public class RestaurantDao
 			ps.setInt(14, restaurant.getTable_6());
 			ps.setInt(15, restaurant.getTable_8());
 			ps.setInt(16, restaurant.getAUTO_ASSIGN());
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{
@@ -267,7 +267,7 @@ public class RestaurantDao
 			ps = con.prepareStatement("DELETE FROM restaurant_details WHERE "
 					+ "id = ?");
 			ps.setInt(1, id);
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{

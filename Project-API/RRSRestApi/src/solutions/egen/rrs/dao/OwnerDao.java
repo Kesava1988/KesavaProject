@@ -37,7 +37,7 @@ public class OwnerDao
 					+ "VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, owner.getEmail());
 			ps.setString(2, owner.getPassword());
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{
@@ -142,7 +142,7 @@ public class OwnerDao
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, owner.getPassword());
 			ps.setString(2, owner.getEmail());
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{
@@ -172,7 +172,7 @@ public class OwnerDao
 			ps = con.prepareStatement("DELETE FROM owner WHERE "
 					+ "email = ?");
 			ps.setString(1, email);
-			ps.executeQuery();
+			ps.execute();
 		}
 		catch (SQLException e)
 		{
