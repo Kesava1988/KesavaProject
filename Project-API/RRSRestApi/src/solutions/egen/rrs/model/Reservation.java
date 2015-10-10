@@ -3,6 +3,9 @@
  */
 package solutions.egen.rrs.model;
 
+import solutions.egen.rrs.exceptions.RRSException;
+import solutions.egen.rrs.utils.ValidationUtils;
+
 /**
  * @author Kesava
  *
@@ -113,8 +116,11 @@ public class Reservation
 
 	/**
 	 * @param time the time to set
+	 * @throws RRSException 
 	 */
-	public void setDatetime(String time) {
+	public void setDatetime(String time) throws RRSException
+	{
+		ValidationUtils.validateReservationtime(time);
 		this.datetime = time;
 	}
 
@@ -131,8 +137,10 @@ public class Reservation
 
 	/**
 	 * @param partySize the partySize to set
+	 * @throws RRSException 
 	 */
-	public void setPartySize(int partySize) {
+	public void setPartySize(int partySize) throws RRSException {
+		ValidationUtils.validatePartySize(partySize);
 		this.partySize = partySize;
 	}
 
@@ -180,6 +188,18 @@ public class Reservation
 
 	public void setRest_id(int rest_id) {
 		this.rest_id = rest_id;
+	}
+
+
+	/**
+	 * Validates if the object has valid date time values
+	 * and party size
+	 * @throws RRSException 
+	 */
+	public void validate() throws RRSException
+	{
+		ValidationUtils.validateReservationtime(datetime);
+		ValidationUtils.validatePartySize(partySize);
 	}
 	
 	

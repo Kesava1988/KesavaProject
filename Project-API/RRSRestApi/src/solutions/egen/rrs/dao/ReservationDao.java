@@ -13,9 +13,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Reservation;
 import solutions.egen.rrs.model.TableDetails;
 import solutions.egen.rrs.utils.DBUtil;
+import solutions.egen.rrs.utils.ERROR_CODES;
+import solutions.egen.rrs.utils.ERROR_MESSSAGES;
 
 /**
  * @author Kesava
@@ -29,8 +32,9 @@ public class ReservationDao
 	/**
 	 * Get all reservations in the database
 	 * @return List of reservations
+	 * @throws RRSException 
 	 */
-	public List<Reservation> getAllReservations()
+	public List<Reservation> getAllReservations() throws RRSException
 	{
 		List<Reservation> result = null;
 		Connection con = DBUtil.getConnection();
@@ -83,8 +87,9 @@ public class ReservationDao
 	 * Get reservation from dataase based on unique confirmation number
 	 * @param conf_no
 	 * @return Reservation
+	 * @throws RRSException 
 	 */
-	public Reservation getReservation(int conf_no)
+	public Reservation getReservation(int conf_no) throws RRSException
 	{
 		Reservation result = null;
 		Connection con = DBUtil.getConnection();
@@ -118,6 +123,10 @@ public class ReservationDao
 				result.setConfNo(rs.getInt("conf_no"));
 				result.setRest_id(rs.getInt("rest_id"));
 			}
+			else
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_CONF_NO));
+			}
 		}
 		catch (SQLException e)
 		{
@@ -135,9 +144,11 @@ public class ReservationDao
 	 * Create a new reservation with the details provided and store in database
 	 * @param reservation
 	 * @return reservation with status, confirmation number and table number(If assigned)
+	 * @throws RRSException 
 	 */
-	public Reservation createReservation(Reservation reservation)
+	public Reservation createReservation(Reservation reservation) throws RRSException
 	{
+		reservation.validate();
 		//TODO : need to check the table status, available tables etc
 		//TODO : if status is success, put the confirmation to 1 else 0
 		createNewReservation(reservation);
@@ -250,9 +261,12 @@ public class ReservationDao
 	 * new party size
 	 * @param reservation
 	 * @return
+	 * @throws RRSException 
 	 */
-	public Reservation editReservation(Reservation reservation)
+	public Reservation editReservation(Reservation reservation) throws RRSException
 	{
+		reservation.validate();
+		
 		int status = reservation.getStatus();
 		
 		//Since we are changing an existing reservation,

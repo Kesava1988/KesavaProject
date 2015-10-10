@@ -88,13 +88,45 @@ public class ValidationUtils
 	 */
 	public static void validateReservationtime(String datetime) throws RRSException
 	{
+		GregorianCalendar now = new GregorianCalendar();
+		
 		GregorianCalendar openTime = validateDatetime(Restaurant.getOPEN_TIME());
+		
 		GregorianCalendar closeTime = validateDatetime(Restaurant.getCLOSE_TIME());
+		
 		GregorianCalendar reservationTime = validateDatetime(datetime);
 		
-		if(reservationTime.before(openTime) || reservationTime.after(closeTime))
+		
+		if(now.before(reservationTime))
 		{
-			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_RESERVATION_TIME));
+			int yr = reservationTime.get(Calendar.YEAR);
+			int month = reservationTime.get(Calendar.MONTH);
+			int date = reservationTime.get(Calendar.DATE);
+			
+			openTime.set(yr, month, date);
+			closeTime.set(yr, month, date);
+			
+			if(openTime.before(reservationTime) && closeTime.after(reservationTime))
+			{
+				return; //Return if everything is OK;
+			}
+			
+		}
+		
+		//else throw error message
+		throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_RESERVATION_TIME));
+	}
+
+	/**
+	 * Party size should be a positive number
+	 * @param partySize
+	 * @throws RRSException 
+	 */
+	public static void validatePartySize(int partySize) throws RRSException
+	{
+		if(partySize <= 0)
+		{
+			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_PARTY_SIZE));
 		}
 	}
 
