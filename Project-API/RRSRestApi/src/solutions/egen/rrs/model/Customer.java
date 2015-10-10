@@ -15,20 +15,6 @@ public class Customer
 	private String phone = "";
 	
 	/**
-	 * @param email
-	 * @param firstName
-	 * @param lastName
-	 * @param phone
-	 */
-	public Customer(String email, String firstName, String lastName, String phone)
-	{
-		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phone = phone;
-	}
-
-	/**
 	 * @return the email
 	 */
 	public String getEmail() {

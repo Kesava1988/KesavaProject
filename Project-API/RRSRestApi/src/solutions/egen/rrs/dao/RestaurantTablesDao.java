@@ -4,12 +4,9 @@
 package solutions.egen.rrs.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.HashMap;
 
 import solutions.egen.rrs.model.Reservation;
@@ -135,19 +132,25 @@ public class RestaurantTablesDao
 				ps.setInt(3, tableSize);
 				rs = ps.executeQuery();	
 				
-				tableId = rs.getInt("table_id");
+				if(rs.next())
+				{
+					tableId =  rs.getInt(1);
+				}
+				
+				ps = null;
+				rs = null;
 				
 				//Now assign table
 				ps = con.prepareStatement("INSERT INTO tables_assigned"
-						+ " (table_size, conf_no, is_tentative, date, time, "
-						+ "table_id, over_assigned) VALUES (?,?,?,?,?,?,?)");
+						+ " (table_size, conf_no, is_tentative, datetime, "
+						+ "table_id, over_assigned) VALUES (?,?,?,?,?,?)");
 				ps.setInt(1, tableSize);
 				ps.setInt(2, reservation.getConfNo());
 				ps.setInt(3, isTentative);
 				ps.setString(4, reservation.getDatetime());
 				ps.setInt(5, tableId);
 				ps.setInt(6, isOverAssigned);
-				rs = ps.executeQuery();
+				ps.executeUpdate();
 				
 				result = new TableDetails();
 				result.setTableId(tableId);

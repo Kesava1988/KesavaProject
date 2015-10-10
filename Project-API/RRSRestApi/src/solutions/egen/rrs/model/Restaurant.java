@@ -3,8 +3,6 @@
  */
 package solutions.egen.rrs.model;
 
-import java.sql.Timestamp;
-
 /**
  * @author Kesava
  *
@@ -12,8 +10,8 @@ import java.sql.Timestamp;
 public class Restaurant
 {
 	private String name = "";
-	private Timestamp open_time = null;
-	private Timestamp close_time = null;
+	private String open_time = null;
+	private String close_time = null;
 	private String address1 = "";
 	private String address2 = "";
 	private String city = "";
@@ -26,7 +24,9 @@ public class Restaurant
 	private int table_4 = 0;
 	private int table_6 = 0;
 	private int table_8 = 0;
-	private int id = 0;
+	
+	//TODO : For present scenario we are hard coding this value to 1, setter is hardcoded
+	private int id = 1;
 	
 	//TODO make sure that this is set when auto assign is changes in restaurant Dao
 	private static int AUTO_ASSIGN = 1; //1 is for true , 0 is for false
@@ -49,28 +49,28 @@ public class Restaurant
 	/**
 	 * @return the open_time
 	 */
-	public Timestamp getOpen_time() {
+	public String getOpen_time() {
 		return open_time;
 	}
 
 	/**
 	 * @param open_time the open_time to set
 	 */
-	public void setOpen_time(Timestamp open_time) {
+	public void setOpen_time(String open_time) {
 		this.open_time = open_time;
 	}
 
 	/**
 	 * @return the close_time
 	 */
-	public Timestamp getClose_time() {
+	public String getClose_time() {
 		return close_time;
 	}
 
 	/**
 	 * @param close_time the close_time to set
 	 */
-	public void setClose_time(Timestamp close_time) {
+	public void setClose_time(String close_time) {
 		this.close_time = close_time;
 	}
 
@@ -253,7 +253,7 @@ public class Restaurant
 	 * @param id the id to set
 	 */
 	public void setId(int id) {
-		this.id = id;
+		this.id = 1;
 	}
 
 	/**

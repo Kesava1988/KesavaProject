@@ -68,8 +68,12 @@ public class CustomerDao
 		String first_name = reservation.getFirst_name();
 		String last_name = reservation.getLast_name();
 		String phone = reservation.getPhone();
-		Customer customer =  new Customer(customerEmail, 
-				first_name, last_name, phone);
+		
+		Customer customer =  new Customer();
+		customer.setEmail(customerEmail);
+		customer.setFirstName(first_name);
+		customer.setLastName(last_name);
+		customer.setPhone(phone);
 		
 		//create customer in database
 		createCustomer(customer);
@@ -102,9 +106,13 @@ public class CustomerDao
 				last_name = rs.getString("last_name");
 				phone = rs.getString("phone");
 				customerEmail = rs.getString("email");
+
+				customer =  new Customer();
+				customer.setEmail(customerEmail);
+				customer.setFirstName(first_name);
+				customer.setLastName(last_name);
+				customer.setPhone(phone);
 				
-				customer = new Customer(customerEmail, first_name,
-						last_name, phone);
 				result.add(customer);
 			}
 		}
@@ -146,7 +154,13 @@ public class CustomerDao
 				first_name = rs.getString("first_name");
 				last_name = rs.getString("last_name");
 				phone = rs.getString("phone");
-				result = new Customer(email, first_name, last_name, phone);
+
+
+				result =  new Customer();
+				result.setEmail(email);
+				result.setFirstName(first_name);
+				result.setLastName(last_name);
+				result.setPhone(phone);
 			}
 		}
 		catch (SQLException e)

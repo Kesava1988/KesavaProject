@@ -34,14 +34,14 @@ public class RestaurantDao
 		try
 		{
 			result = new ArrayList<Restaurant>();
-			ps = con.prepareStatement("Select * from restaurant_details");
+			ps = con.prepareStatement("SELECT * FROM restaurant_details");
 			rs = ps.executeQuery();
 			while(rs.next())
 			{
 				restaurant = new Restaurant();
 				restaurant.setName(rs.getString("name"));
-				restaurant.setOpen_time(rs.getTimestamp("open_time"));
-				restaurant.setClose_time(rs.getTimestamp("close_time"));
+				restaurant.setOpen_time(rs.getString("open_time"));
+				restaurant.setClose_time(rs.getString("close_time"));
 				restaurant.setAddress1(rs.getString("address1"));
 				restaurant.setAddress2(rs.getString("address2"));
 				restaurant.setCity(rs.getString("city"));
@@ -54,7 +54,7 @@ public class RestaurantDao
 				restaurant.setTable_4(rs.getInt("table_4"));
 				restaurant.setTable_6(rs.getInt("table_6"));
 				restaurant.setTable_8(rs.getInt("table_8"));
-				restaurant.setId(rs.getInt("id"));
+//				restaurant.setId(rs.getInt("id"));
 				result.add(restaurant);
 			}
 		}
@@ -83,16 +83,17 @@ public class RestaurantDao
 		ResultSet rs = null;
 		try
 		{
-			result = new Restaurant();
+			
 			ps = con.prepareStatement("SELECT * FROM restaurant_details WHERE "
 					+ "id = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			if(rs.next())
 			{
+				result = new Restaurant();
 				result.setName(rs.getString("name"));
-				result.setOpen_time(rs.getTimestamp("open_time"));
-				result.setClose_time(rs.getTimestamp("close_time"));
+				result.setOpen_time(rs.getString("open_time"));
+				result.setClose_time(rs.getString("close_time"));
 				result.setAddress1(rs.getString("address1"));
 				result.setAddress2(rs.getString("address2"));
 				result.setCity(rs.getString("city"));
@@ -129,9 +130,12 @@ public class RestaurantDao
 	{
 		Restaurant result = addRestaurant(restaurant);
 		
-		//Now since a new restaurant is added, add tables too
-		TableDao tableDao = new TableDao();
-		tableDao.addTables(result);
+		if(result != null)
+		{
+			//Now since a new restaurant is added, add tables too
+			TableDao tableDao = new TableDao();
+			tableDao.addTables(result);
+		}
 		
 		return result;
 	}
@@ -150,12 +154,12 @@ public class RestaurantDao
 			ps = con.prepareStatement("INSERT INTO restaurant_details ("
 					+ "name,open_time,close_time,address1,address2,city,"
 					+ "state,zip,email,phone,table_1,table_2,table_4,table_6,"
-					+ "table_8,auto_assign) VALUES "
-					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+					+ "table_8,auto_assign,id) VALUES "
+					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 					, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, restaurant.getName());
-			ps.setTimestamp(2, restaurant.getOpen_time());
-			ps.setTimestamp(3, restaurant.getClose_time());
+			ps.setString(2, restaurant.getOpen_time());
+			ps.setString(3, restaurant.getClose_time());
 			ps.setString(4, restaurant.getAddress1());
 			ps.setString(5, restaurant.getAddress2());
 			ps.setString(6, restaurant.getCity());
@@ -169,16 +173,18 @@ public class RestaurantDao
 			ps.setInt(14, restaurant.getTable_6());
 			ps.setInt(15, restaurant.getTable_8());
 			ps.setInt(16, restaurant.getAUTO_ASSIGN());
+			ps.setInt(17, restaurant.getId());
 			ps.execute();
 			rs = ps.getGeneratedKeys();
 			if(rs.next())
 			{
-				restaurant.setId(rs.getInt("id"));
+//				restaurant.setId(rs.getInt(1));
 			}
 		}
 		catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
+			restaurant = null;
 			e.printStackTrace();
 		}
 		finally
@@ -222,8 +228,8 @@ public class RestaurantDao
 					+ "WHERE id = ?",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, restaurant.getName());
-			ps.setTimestamp(2, restaurant.getOpen_time());
-			ps.setTimestamp(3, restaurant.getClose_time());
+			ps.setString(2, restaurant.getOpen_time());
+			ps.setString(3, restaurant.getClose_time());
 			ps.setString(4, restaurant.getAddress1());
 			ps.setString(5, restaurant.getAddress2());
 			ps.setString(6, restaurant.getCity());
@@ -237,7 +243,8 @@ public class RestaurantDao
 			ps.setInt(14, restaurant.getTable_6());
 			ps.setInt(15, restaurant.getTable_8());
 			ps.setInt(16, restaurant.getAUTO_ASSIGN());
-			ps.execute();
+			ps.setInt(17, restaurant.getId());
+			ps.executeUpdate();
 		}
 		catch (SQLException e)
 		{

@@ -3,7 +3,6 @@
  */
 package solutions.egen.rrs.controllers;
 
-import java.sql.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -157,7 +156,7 @@ public class ReservationController
 			@ApiResponse (code=404, message="Not Found"),
 			@ApiResponse (code=500, message="Internal Server Error")
 			})
-	public void deleteReservation(@PathParam("id") int conf_no)
+	public void deleteReservation(@PathParam("conf_no") int conf_no)
 	{
 		ReservationDao rDao = new ReservationDao();
 		rDao.deleteReservation(conf_no);

@@ -90,9 +90,9 @@ public class TableDao
 			if(rs.next())
 			{
 				result = new Table();
-				result.setRest_id(rs.getInt("rest_id"));
-				result.setTable_id(rs.getInt("table_id"));
-				result.setTable_size(rs.getInt("table_size"));
+				result.setRest_id(restId);
+				result.setTable_id(rs.getInt(1));
+				result.setTable_size(table_size);
 			}
 		}
 		catch (SQLException e)
