@@ -13,14 +13,19 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import solutions.egen.rrs.dao.RestaurantDao;
+import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Restaurant;
+import solutions.egen.rrs.utils.ERROR_CODES;
+import solutions.egen.rrs.utils.ERROR_MESSSAGES;
 
 /**
  * @author Kesava
@@ -44,8 +49,15 @@ public class RestaurantController
 			})
 	public List<Restaurant> getAllRestaurants()
 	{
-		RestaurantDao restDao = new RestaurantDao();
-		return restDao.getAllRestaurants();
+		try
+		{
+			RestaurantDao restDao = new RestaurantDao();
+			return restDao.getAllRestaurants();
+		}
+		catch (RRSException e)
+		{
+			throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);		
+		}
 	}
 	
 	/**
@@ -65,8 +77,23 @@ public class RestaurantController
 			})
 	public Restaurant getRestaurant(@PathParam("id") int id)
 	{
-		RestaurantDao restDao = new RestaurantDao();
-		return restDao.getRestaurant(id);
+		
+		try
+		{
+			RestaurantDao restDao = new RestaurantDao();
+			return restDao.getRestaurant(id);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_RESTAURANT_ID)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 	
 	/**
@@ -86,9 +113,16 @@ public class RestaurantController
 			})
 	public Restaurant createRestaurant(Restaurant restaurant)
 	{
-		//Add the restaurant into database
-		RestaurantDao restDao = new RestaurantDao();
-		return restDao.createRestaurant(restaurant);
+		try
+		{
+			//Add the restaurant into database
+			RestaurantDao restDao = new RestaurantDao();
+			return restDao.createRestaurant(restaurant);
+		}
+		catch (RRSException e)
+		{
+			throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	/**
@@ -111,8 +145,23 @@ public class RestaurantController
 			})
 	public Restaurant editRestaurant(Restaurant restaurant)
 	{
-		RestaurantDao restDao = new RestaurantDao();
-		return restDao.editRestaurant(restaurant);
+		
+		try
+		{
+			RestaurantDao restDao = new RestaurantDao();
+			return restDao.editRestaurant(restaurant);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_RESTAURANT_ID)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 	
 	
@@ -133,8 +182,23 @@ public class RestaurantController
 			})
 	public void deleteRestaurant(@PathParam("id") int id)
 	{
-		RestaurantDao restDao = new RestaurantDao();
-		restDao.deleteRestaurant(id);
+		
+		try
+		{
+			RestaurantDao restDao = new RestaurantDao();
+			restDao.deleteRestaurant(id);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_RESTAURANT_ID)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 
 }

@@ -9,7 +9,11 @@ package solutions.egen.rrs.exceptions;
  */
 public class RRSException extends Exception
 {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2304139343226696312L;
 
 	/**
 	 * 

@@ -25,8 +25,6 @@ public class TableHelper
 	private static int TABLES_SIZE_6 = 0;
 	private static int TABLES_SIZE_8 = 0;
 	
-	private static final int MAX_TABLE_SIZE = 8;
-	
 	/**
 	 * @return the tABLES_SIZE_1
 	 */

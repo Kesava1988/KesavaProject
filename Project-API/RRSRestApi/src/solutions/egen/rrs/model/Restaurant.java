@@ -3,6 +3,11 @@
  */
 package solutions.egen.rrs.model;
 
+import solutions.egen.rrs.exceptions.RRSException;
+import solutions.egen.rrs.utils.ERROR_CODES;
+import solutions.egen.rrs.utils.ERROR_MESSSAGES;
+import solutions.egen.rrs.utils.ValidationUtils;
+
 /**
  * @author Kesava
  *
@@ -28,8 +33,15 @@ public class Restaurant
 	//TODO : For present scenario we are hard coding this value to 1, setter is hardcoded
 	private int id = 1;
 	
+	private int auto_assign = 0;
+	
 	//TODO make sure that this is set when auto assign is changes in restaurant Dao
 	private static int AUTO_ASSIGN = 1; //1 is for true , 0 is for false
+	
+	//Static variables
+	private static String OPEN_TIME = "2015-10-10-10-00";
+	
+	private static String CLOSE_TIME = "2015-10-10-20-00";
 
 	/**
 	 * @return the name
@@ -54,24 +66,24 @@ public class Restaurant
 	}
 
 	/**
-	 * @param open_time the open_time to set
-	 */
-	public void setOpen_time(String open_time) {
-		this.open_time = open_time;
-	}
-
-	/**
 	 * @return the close_time
 	 */
 	public String getClose_time() {
 		return close_time;
 	}
-
-	/**
-	 * @param close_time the close_time to set
-	 */
-	public void setClose_time(String close_time) {
-		this.close_time = close_time;
+	
+	public void setOpen_Close_Time(String open_time, String close_time) throws RRSException
+	{
+		if(ValidationUtils.validateOpenCloseTimes(open_time,close_time))
+		{
+			this.open_time = open_time;
+			this.close_time = close_time;
+		}
+		else
+		{
+			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_OPEN_CLOSE_TIMES));
+		}
+		
 	}
 
 	/**
@@ -257,6 +269,21 @@ public class Restaurant
 	}
 
 	/**
+	 * @return the auto_assign
+	 */
+	public int getAuto_assign() {
+		return auto_assign;
+	}
+
+	/**
+	 * @param auto_assign the auto_assign to set
+	 */
+	public void setAuto_assign(int auto_assign)
+	{
+		this.auto_assign = auto_assign;
+	}
+
+	/**
 	 * @return the aUTO_ASSIGN
 	 */
 	public static int getAUTO_ASSIGN() {
@@ -269,4 +296,37 @@ public class Restaurant
 	public static void setAUTO_ASSIGN(int aUTO_ASSIGN) {
 		AUTO_ASSIGN = aUTO_ASSIGN;
 	}
+
+	/**
+	 * @return the oPEN_TIME
+	 */
+	public static String getOPEN_TIME() {
+		return OPEN_TIME;
+	}
+
+	/**
+	 * @return the cLOSE_TIME
+	 */
+	public static String getCLOSE_TIME() {
+		return CLOSE_TIME;
+	}
+
+	/**
+	 * @param cLOSE_TIME the cLOSE_TIME to set
+	 * @throws RRSException 
+	 */
+	public static void setOPEN_CLOSE_TIME(String open_time, String close_time) throws RRSException
+	{
+		if(ValidationUtils.validateOpenCloseTimes(open_time,close_time))
+		{
+			OPEN_TIME = open_time;
+			CLOSE_TIME = close_time;
+		}
+		else
+		{
+			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_DATE_TIME));
+		}
+	}
+	
+	
 }

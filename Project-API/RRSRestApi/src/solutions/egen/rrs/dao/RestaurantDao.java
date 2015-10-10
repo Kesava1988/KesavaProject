@@ -10,8 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Restaurant;
 import solutions.egen.rrs.utils.DBUtil;
+import solutions.egen.rrs.utils.ERROR_CODES;
+import solutions.egen.rrs.utils.ERROR_MESSSAGES;
+import solutions.egen.rrs.utils.ValidationUtils;
 
 /**
  * @author Kesava
@@ -23,8 +27,9 @@ public class RestaurantDao
 	/**
 	 * Return all the restaurants in the database
 	 * @return
+	 * @throws RRSException 
 	 */
-	public List<Restaurant> getAllRestaurants()
+	public List<Restaurant> getAllRestaurants() throws RRSException
 	{
 		List<Restaurant> result = null;
 		Connection con = DBUtil.getConnection();
@@ -40,8 +45,7 @@ public class RestaurantDao
 			{
 				restaurant = new Restaurant();
 				restaurant.setName(rs.getString("name"));
-				restaurant.setOpen_time(rs.getString("open_time"));
-				restaurant.setClose_time(rs.getString("close_time"));
+				restaurant.setOpen_Close_Time( rs.getString("open_time") , rs.getString("close_time"));
 				restaurant.setAddress1(rs.getString("address1"));
 				restaurant.setAddress2(rs.getString("address2"));
 				restaurant.setCity(rs.getString("city"));
@@ -54,14 +58,14 @@ public class RestaurantDao
 				restaurant.setTable_4(rs.getInt("table_4"));
 				restaurant.setTable_6(rs.getInt("table_6"));
 				restaurant.setTable_8(rs.getInt("table_8"));
-//				restaurant.setId(rs.getInt("id"));
+				restaurant.setId(rs.getInt("id"));
 				result.add(restaurant);
 			}
 		}
 		catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -74,8 +78,9 @@ public class RestaurantDao
 	 * Find restaurant in the database based on phone number
 	 * @param phone
 	 * @return
+	 * @throws RRSException 
 	 */
-	public Restaurant getRestaurant(int id)
+	public Restaurant getRestaurant(int id) throws RRSException
 	{
 		Restaurant result = null;
 		Connection con = DBUtil.getConnection();
@@ -92,8 +97,7 @@ public class RestaurantDao
 			{
 				result = new Restaurant();
 				result.setName(rs.getString("name"));
-				result.setOpen_time(rs.getString("open_time"));
-				result.setClose_time(rs.getString("close_time"));
+				result.setOpen_Close_Time(rs.getString("open_time") , rs.getString("close_time"));
 				result.setAddress1(rs.getString("address1"));
 				result.setAddress2(rs.getString("address2"));
 				result.setCity(rs.getString("city"));
@@ -108,11 +112,15 @@ public class RestaurantDao
 				result.setTable_8(rs.getInt("table_8"));
 				result.setId(rs.getInt("id"));
 			}
+			else
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_RESTAURANT_ID));
+			}
 		}
 		catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -125,8 +133,9 @@ public class RestaurantDao
 	 * Create a new restaurant in the database
 	 * @param restaurant
 	 * @return
+	 * @throws RRSException 
 	 */
-	public Restaurant createRestaurant(Restaurant restaurant)
+	public Restaurant createRestaurant(Restaurant restaurant) throws RRSException
 	{
 		Restaurant result = addRestaurant(restaurant);
 		
@@ -143,54 +152,70 @@ public class RestaurantDao
 	/**
 	 * @param restaurant
 	 * @return
+	 * @throws RRSException 
 	 */
-	private Restaurant addRestaurant(Restaurant restaurant)
+	private Restaurant addRestaurant(Restaurant restaurant) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try
+		
+		if(ValidationUtils.validateOpenCloseTimes(restaurant.getOpen_time(), restaurant.getClose_time()))
 		{
-			ps = con.prepareStatement("INSERT INTO restaurant_details ("
-					+ "name,open_time,close_time,address1,address2,city,"
-					+ "state,zip,email,phone,table_1,table_2,table_4,table_6,"
-					+ "table_8,auto_assign,id) VALUES "
-					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-					, PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1, restaurant.getName());
-			ps.setString(2, restaurant.getOpen_time());
-			ps.setString(3, restaurant.getClose_time());
-			ps.setString(4, restaurant.getAddress1());
-			ps.setString(5, restaurant.getAddress2());
-			ps.setString(6, restaurant.getCity());
-			ps.setString(7, restaurant.getState());
-			ps.setInt(8, restaurant.getZip());
-			ps.setString(9, restaurant.getEmail());
-			ps.setString(10, restaurant.getPhone());
-			ps.setInt(11, restaurant.getTable_1());
-			ps.setInt(12, restaurant.getTable_2());
-			ps.setInt(13, restaurant.getTable_4());
-			ps.setInt(14, restaurant.getTable_6());
-			ps.setInt(15, restaurant.getTable_8());
-			ps.setInt(16, restaurant.getAUTO_ASSIGN());
-			ps.setInt(17, restaurant.getId());
-			ps.execute();
-			rs = ps.getGeneratedKeys();
-			if(rs.next())
+			try
 			{
-//				restaurant.setId(rs.getInt(1));
+				ps = con.prepareStatement("INSERT INTO restaurant_details ("
+						+ "name,open_time,close_time,address1,address2,city,"
+						+ "state,zip,email,phone,table_1,table_2,table_4,table_6,"
+						+ "table_8,auto_assign,id) VALUES "
+						+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+						, PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setString(1, restaurant.getName());
+				ps.setString(2, restaurant.getOpen_time());
+				ps.setString(3, restaurant.getClose_time());
+				ps.setString(4, restaurant.getAddress1());
+				ps.setString(5, restaurant.getAddress2());
+				ps.setString(6, restaurant.getCity());
+				ps.setString(7, restaurant.getState());
+				ps.setInt(8, restaurant.getZip());
+				ps.setString(9, restaurant.getEmail());
+				ps.setString(10, restaurant.getPhone());
+				ps.setInt(11, restaurant.getTable_1());
+				ps.setInt(12, restaurant.getTable_2());
+				ps.setInt(13, restaurant.getTable_4());
+				ps.setInt(14, restaurant.getTable_6());
+				ps.setInt(15, restaurant.getTable_8());
+				ps.setInt(16, restaurant.getAuto_assign());
+				//TODO: just a hack to prevent entering new restaurants into database
+				ps.setInt(17, restaurant.getId());
+				ps.execute();
+				rs = ps.getGeneratedKeys();
+				if(rs.next())
+				{
+					restaurant.setId(rs.getInt(1));
+				}
+			}
+			catch (SQLException e)
+			{
+				restaurant = null;
+				e.printStackTrace();
+				throw new RRSException(e.getMessage(), e.getCause());
+			}
+			finally
+			{
+				DBUtil.releaseResources(con,ps,rs);
 			}
 		}
-		catch (SQLException e)
+		else
 		{
-			// TODO Auto-generated catch block
-			restaurant = null;
-			e.printStackTrace();
+			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_OPEN_CLOSE_TIMES));
 		}
-		finally
-		{
-			DBUtil.releaseResources(con,ps,rs);
-		}
+		
+		
+		
+		Restaurant.setAUTO_ASSIGN(restaurant.getAuto_assign());
+		Restaurant.setOPEN_CLOSE_TIME(restaurant.getOpen_time(), restaurant.getClose_time());
+		
 		return restaurant;
 	}
 
@@ -198,72 +223,95 @@ public class RestaurantDao
 	 * Edit restaurant details based on the id
 	 * @param restaurant
 	 * @return
+	 * @throws RRSException 
 	 */
-	public Restaurant editRestaurant(Restaurant restaurant)
+	public Restaurant editRestaurant(Restaurant restaurant) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try
+		
+		if(ValidationUtils.validateOpenCloseTimes(restaurant.getOpen_time(), restaurant.getClose_time()))
 		{
-			//First create a reservation with default status and table ids
-			//Then update based on the table availability.
-			ps = con.prepareStatement("UPDATE restaurant_details "
-					+ "SET name = ?,"
-					+ "open_time = ?,"
-					+ "close_time = ?,"
-					+ "address1 = ?,"
-					+ "address2 = ?,"
-					+ "city = ?,"
-					+ "state = ?,"
-					+ "zip = ?,"
-					+ "email = ?,"
-					+ "phone = ?,"
-					+ "table_1 = ?,"
-					+ "table_2 = ?,"
-					+ "table_4 = ?,"
-					+ "table_6 = ?,"
-					+ "table_8 = ?,"
-					+ "auto_assign = ? "
-					+ "WHERE id = ?",
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1, restaurant.getName());
-			ps.setString(2, restaurant.getOpen_time());
-			ps.setString(3, restaurant.getClose_time());
-			ps.setString(4, restaurant.getAddress1());
-			ps.setString(5, restaurant.getAddress2());
-			ps.setString(6, restaurant.getCity());
-			ps.setString(7, restaurant.getState());
-			ps.setInt(8, restaurant.getZip());
-			ps.setString(9, restaurant.getEmail());
-			ps.setString(10, restaurant.getPhone());
-			ps.setInt(11, restaurant.getTable_1());
-			ps.setInt(12, restaurant.getTable_2());
-			ps.setInt(13, restaurant.getTable_4());
-			ps.setInt(14, restaurant.getTable_6());
-			ps.setInt(15, restaurant.getTable_8());
-			ps.setInt(16, restaurant.getAUTO_ASSIGN());
-			ps.setInt(17, restaurant.getId());
-			ps.executeUpdate();
+			try
+			{
+				//First create a reservation with default status and table ids
+				//Then update based on the table availability.
+				ps = con.prepareStatement("UPDATE restaurant_details "
+						+ "SET name = ?,"
+						+ "open_time = ?,"
+						+ "close_time = ?,"
+						+ "address1 = ?,"
+						+ "address2 = ?,"
+						+ "city = ?,"
+						+ "state = ?,"
+						+ "zip = ?,"
+						+ "email = ?,"
+						+ "phone = ?,"
+						+ "table_1 = ?,"
+						+ "table_2 = ?,"
+						+ "table_4 = ?,"
+						+ "table_6 = ?,"
+						+ "table_8 = ?,"
+						+ "auto_assign = ? "
+						+ "WHERE id = ?",
+						PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setString(1, restaurant.getName());
+				ValidationUtils.validateOpenCloseTimes(restaurant.getOpen_time(), restaurant.getClose_time());
+				ps.setString(2, restaurant.getOpen_time());
+				ps.setString(3, restaurant.getClose_time());
+				ps.setString(4, restaurant.getAddress1());
+				ps.setString(5, restaurant.getAddress2());
+				ps.setString(6, restaurant.getCity());
+				ps.setString(7, restaurant.getState());
+				ps.setInt(8, restaurant.getZip());
+				ps.setString(9, restaurant.getEmail());
+				ps.setString(10, restaurant.getPhone());
+				ps.setInt(11, restaurant.getTable_1());
+				ps.setInt(12, restaurant.getTable_2());
+				ps.setInt(13, restaurant.getTable_4());
+				ps.setInt(14, restaurant.getTable_6());
+				ps.setInt(15, restaurant.getTable_8());
+				ps.setInt(16, restaurant.getAuto_assign());
+				ps.setInt(17, restaurant.getId());
+				int status = ps.executeUpdate();
+				
+				//If row doesn't exist for the specified constraint
+				if(status == 0)
+				{
+					throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_RESTAURANT_ID));
+				}
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+				throw new RRSException(e.getMessage(), e.getCause());
+			}
+			finally
+			{
+				DBUtil.releaseResources(con,ps,rs);
+			}
 		}
-		catch (SQLException e)
+		else
 		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			DBUtil.releaseResources(con,ps,rs);
+			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_OPEN_CLOSE_TIMES));
 		}
 		
+		
+		
 		checkAndUpdateTables(restaurant);
+		
+		Restaurant.setAUTO_ASSIGN(restaurant.getAuto_assign());
+		Restaurant.setOPEN_CLOSE_TIME(restaurant.getOpen_time(), restaurant.getClose_time());
 		return restaurant;
 	}
 
 	/**
 	 * Delete a restaurant in database based on its id
 	 * @param id
+	 * @throws RRSException 
 	 */
-	public void deleteRestaurant(int id)
+	public void deleteRestaurant(int id) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
@@ -274,12 +322,18 @@ public class RestaurantDao
 			ps = con.prepareStatement("DELETE FROM restaurant_details WHERE "
 					+ "id = ?");
 			ps.setInt(1, id);
-			ps.execute();
+			int status = ps.executeUpdate();
+			
+			//If row doesnt exist for the specified constraint
+			if(status == 0)
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_RESTAURANT_ID));
+			}
 		}
 		catch (SQLException e)
 		{
-			//TODO need custom exception
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
