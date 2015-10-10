@@ -25,6 +25,7 @@ public class ReservationDao
 {
 	public static final int RESERVATION_SUCCESS = 1;
 	public static final int RESERVATION_WAITING = 0;
+	
 	/**
 	 * Get all reservations in the database
 	 * @return List of reservations
@@ -34,34 +35,35 @@ public class ReservationDao
 		List<Reservation> result = null;
 		Connection con = DBUtil.getConnection();
 		Reservation reservation = null;
-		String customerEmail = "";
-		String first_name = "";
-		String last_name = "";
-		String phone = "";
-		int confNo = 0;
-		Timestamp datetime = null;
-		int partySize = 0;
-		int status = 0;
-		int tableID = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try
 		{
 			result = new ArrayList<Reservation>();
-			ps = con.prepareStatement("Select * from reservations");
+			ps = con.prepareStatement("SELECT customer_details.first_name, "
+					+ "customer_details.last_name, customer_details.phone, "
+					+ "reservations.* FROM reservations LEFT JOIN "
+					+ "customer_details ON "
+					+ "(customer_details.email = reservations.cust_email AND "
+					+ " customer_details.rest_id = reservations.rest_id )"
+					+ "WHERE reservations.rest_id = 1");
 			rs = ps.executeQuery();
 			
 			while(rs.next())
 			{
-				customerEmail = rs.getString("cust_email");
-				confNo = rs.getInt("conf_no");
-				datetime = rs.getTimestamp("datetime");
-				partySize = rs.getInt("party_size");
-				status = rs.getInt("status");
-				tableID = rs.getInt("table_id");
-				reservation = new Reservation(
-						customerEmail, first_name, last_name, phone, confNo,
-						datetime, partySize, status, tableID);
+				reservation = new Reservation();
+				
+				reservation.setFirst_name(rs.getString("first_name"));
+				reservation.setLast_name(rs.getString("last_name"));
+				reservation.setPhone(rs.getString("phone"));
+				reservation.setCustomerEmail(rs.getString("cust_email"));
+				reservation.setDatetime(rs.getString("datetime"));
+				reservation.setPartySize(rs.getInt("party_size"));
+				reservation.setStatus(rs.getInt("status"));
+				reservation.setTableID(rs.getInt("table_id"));
+				reservation.setConfNo(rs.getInt("conf_no"));
+				reservation.setRest_id(rs.getInt("rest_id"));
+				
 				result.add(reservation);
 			}
 		}
@@ -78,62 +80,6 @@ public class ReservationDao
 	}
 	
 	/**
-	 * Get all reservations in the database on particular date
-	 * @return List of reservations
-	 */
-
-	public List<Reservation> getAllReservations(Timestamp datetime)
-	{
-		List<Reservation> result = null;
-		Connection con = DBUtil.getConnection();
-		Reservation reservation = null;
-		String customerEmail = "";
-		String first_name = "";
-		String last_name = "";
-		String phone = "";
-		int confNo = 0;
-		Timestamp time = null;
-		int partySize = 0;
-		int status = 0;
-		int tableID = 0;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try
-		{
-			result = new ArrayList<Reservation>();
-			ps = con.prepareStatement("Select * from reservations where datetime = ?");
-			ps.setTimestamp(1, datetime);
-			rs = ps.executeQuery();
-			
-			while(rs.next())
-			{
-				customerEmail = rs.getString("cust_email");
-				confNo = rs.getInt("conf_no");
-				time = rs.getTimestamp("datetime");
-				partySize = rs.getInt("party_size");
-				status = rs.getInt("status");
-				tableID = rs.getInt("table_id");
-				reservation = new Reservation(
-						customerEmail, first_name, last_name, phone, confNo,
-						time, partySize, status, tableID);
-				result.add(reservation);
-			}
-		}
-		catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally
-		{
-			DBUtil.releaseResources(con,ps,rs);
-		}
-		
-		
-		return result;
-	}
-
-	/**
 	 * Get reservation from dataase based on unique confirmation number
 	 * @param conf_no
 	 * @return Reservation
@@ -142,33 +88,35 @@ public class ReservationDao
 	{
 		Reservation result = null;
 		Connection con = DBUtil.getConnection();
-		String customerEmail = "";
-		String first_name = "";
-		String last_name = "";
-		String phone = "";
-		Timestamp time = null;
-		int partySize = 0;
-		int status = 0;
-		int tableID = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try
 		{
 			
-			ps = con.prepareStatement("Select * from reservations where conf_no = ?");
+			ps = con.prepareStatement("SELECT customer_details.first_name, "
+					+ "customer_details.last_name, customer_details.phone, "
+					+ "reservations.* FROM reservations LEFT JOIN "
+					+ "customer_details ON "
+					+ "(customer_details.email = reservations.cust_email AND "
+					+ " customer_details.rest_id = reservations.rest_id )"
+					+ "WHERE ( reservations.rest_id = 1 AND reservations.conf_no = ? )");
 			ps.setInt(1, conf_no);
 			rs = ps.executeQuery();
 			
-			while(rs.next())
+			if(rs.next())
 			{
-				customerEmail = rs.getString("cust_email");
-				time = rs.getTimestamp("datetime");
-				partySize = rs.getInt("party_size");
-				status = rs.getInt("status");
-				tableID = rs.getInt("table_id");
-				result = new Reservation(
-						customerEmail, first_name, last_name, phone, conf_no,
-						time, partySize, status, tableID);
+				result = new Reservation();
+				
+				result.setFirst_name(rs.getString("first_name"));
+				result.setLast_name(rs.getString("last_name"));
+				result.setPhone(rs.getString("phone"));
+				result.setCustomerEmail(rs.getString("cust_email"));
+				result.setDatetime(rs.getString("datetime"));
+				result.setPartySize(rs.getInt("party_size"));
+				result.setStatus(rs.getInt("status"));
+				result.setTableID(rs.getInt("table_id"));
+				result.setConfNo(rs.getInt("conf_no"));
+				result.setRest_id(rs.getInt("rest_id"));
 			}
 		}
 		catch (SQLException e)
@@ -221,10 +169,7 @@ public class ReservationDao
 	private void createNewReservation(Reservation reservation)
 	{
 		Connection con = DBUtil.getConnection();
-		String customerEmail = reservation.getCustomerEmail();
 		int confNo;
-		Timestamp time = reservation.getTime();
-		int partySize = reservation.getPartySize();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try
@@ -232,18 +177,19 @@ public class ReservationDao
 			//First create a reservation with default status and table ids
 			//Then update based on the table availability.
 			ps = con.prepareStatement("INSERT INTO reservations "
-					+ "(cust_email, datetime, party_size) "
-					+ "VALUES (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1, customerEmail);
-			ps.setTimestamp(2, time);
-			ps.setInt(3, partySize);
-			ps.execute();
+					+ "(cust_email, datetime, party_size, rest_id) "
+					+ "VALUES (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setString(1, reservation.getCustomerEmail());
+			ps.setString(2, reservation.getDatetime());
+			ps.setInt(3, reservation.getPartySize());
+			ps.setInt(4, reservation.getRest_id());
+			ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
 			
-			//Reservation is created and a confirmation number is created
+			//Reservation is created and a unique confirmation number is auto generated
 			if(rs.next())
 			{
-				confNo = rs.getInt("conf_no");
+				confNo = rs.getInt(1);
 				reservation.setConfNo(confNo);
 			}
 		}
@@ -349,7 +295,7 @@ public class ReservationDao
 		ResultSet rs = null;
 		String customerEmail = reservation.getCustomerEmail();
 		int confNo = reservation.getConfNo();
-		Timestamp time = reservation.getTime();
+		String datetime = reservation.getDatetime();
 		int partySize = reservation.getPartySize();
 		int status = reservation.getStatus();
 		int tableID = reservation.getTableID();
@@ -362,7 +308,7 @@ public class ReservationDao
 					+ " table_id = ? WHERE conf_no = ?",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, customerEmail);
-			ps.setTimestamp(2, time);
+			ps.setString(2, datetime);
 			ps.setInt(3, partySize);
 			ps.setInt(4, status);
 			ps.setInt(5, tableID);

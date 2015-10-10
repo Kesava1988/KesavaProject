@@ -52,28 +52,6 @@ public class ReservationController
 	}
 	
 	/**
-	 * Get all reservations in the database
-	 * on specific date
-	 */
-	@GET
-	@Path("/ondate")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			value = "Find reservations for a specific date",
-			notes = "Find all reservations in the database for a specific date")
-	@ApiResponses( value = {
-			@ApiResponse (code=200, message="Success"),
-			@ApiResponse (code=404, message="Not Found"),
-			@ApiResponse (code=500, message="Internal Server Error")
-			})
-	public List<Reservation> getAllReservations(Date date)
-	{
-		ReservationDao rDao = new ReservationDao();
-		return rDao.getAllReservations(date);
-	}
-	
-	/**
 	 * Get reservation in the database
 	 * based on confirmation Code
 	 */

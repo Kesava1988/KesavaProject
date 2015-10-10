@@ -40,7 +40,7 @@ public class RestaurantTablesDao
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Timestamp time = reservation.getTime();
+		String datetime = reservation.getDatetime();
 		int partySize = reservation.getPartySize();
 		HashMap<Integer, Integer> tablesAssigned = new HashMap<>();
 		TableHelper tHelper = new TableHelper();
@@ -55,7 +55,7 @@ public class RestaurantTablesDao
 			ps = con.prepareStatement("SELECT table_size, COUNT(table_size) from tables_assigned "
 					+ "where (datetime = ? and table_size >= ?) "
 					+ "group by table_size order by table_size");
-			ps.setTimestamp(1, time);
+			ps.setString(1, datetime);
 			ps.setInt(2, partySize);
 			rs = ps.executeQuery();			
 			
@@ -112,7 +112,7 @@ public class RestaurantTablesDao
 				ps.setInt(1, tableSize);
 				ps.setInt(2, reservation.getConfNo());
 				ps.setInt(3, isTentative);
-				ps.setTimestamp(4, reservation.getTime());
+				ps.setString(4, reservation.getDatetime());
 				ps.setInt(5, isOverAssigned);
 				rs = ps.executeQuery();	
 				result = new TableDetails();
@@ -123,15 +123,15 @@ public class RestaurantTablesDao
 			{
 				//First we need a table id
 				int tableId = 0;
-				ps = con.prepareStatement("SELECT restaurant_tables.table_id"
+				ps = con.prepareStatement("SELECT restaurant_tables.table_id "
 						+ "FROM restaurant_tables WHERE ( "
-						+ "(restaurant_tables.table_size = ?) AND"
+						+ "(restaurant_tables.table_size = ?) AND "
 						+ "restaurant_tables.table_id  NOT IN "
-						+ "(SELECT tables_assigned.table_id from tables_assigned"
-						+ "where (tables_assigned.datetime = ?"
-						+ "and tables_assigned.table_size = ? )  ) ) LIMIT 1");
+						+ "(SELECT tables_assigned.table_id from tables_assigned "
+						+ "where (tables_assigned.datetime = ? "
+						+ " AND tables_assigned.table_size = ? )  ) ) LIMIT 1");
 				ps.setInt(1, tableSize);
-				ps.setTimestamp(2, reservation.getTime());
+				ps.setString(2, reservation.getDatetime());
 				ps.setInt(3, tableSize);
 				rs = ps.executeQuery();	
 				
@@ -144,7 +144,7 @@ public class RestaurantTablesDao
 				ps.setInt(1, tableSize);
 				ps.setInt(2, reservation.getConfNo());
 				ps.setInt(3, isTentative);
-				ps.setTimestamp(4, reservation.getTime());
+				ps.setString(4, reservation.getDatetime());
 				ps.setInt(5, tableId);
 				ps.setInt(6, isOverAssigned);
 				rs = ps.executeQuery();
@@ -172,17 +172,15 @@ public class RestaurantTablesDao
 	{
 		Connection con = DBUtil.getConnection();
 		int confNo = reservation.getConfNo();
-		Date date = reservation.getDate();
-		Timestamp time = reservation.getTime();
+		String datetime = reservation.getDatetime();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try
 		{
 			ps = con.prepareStatement("DELETE FROM tables_assigned WHERE"
-					+ "(conf_no = ? AND date = ? AND time = ?)");
+					+ "(conf_no = ? AND datetime = ?)");
 			ps.setInt(1, confNo);
-			ps.setDate(2, date);
-			ps.setTimestamp(3, time);
+			ps.setString(2, datetime);
 			rs = ps.executeQuery();
 		}
 		catch (SQLException e)

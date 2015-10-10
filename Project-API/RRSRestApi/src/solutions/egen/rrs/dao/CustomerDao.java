@@ -176,9 +176,9 @@ public class CustomerDao
 			ps = con.prepareStatement("INSERT INTO customer_details "
 					+ "(first_name, last_name, email, phone) "
 					+ "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1, customer.getEmail());
-			ps.setString(2, customer.getFirstName());
-			ps.setString(3, customer.getLastName());
+			ps.setString(1, customer.getFirstName());
+			ps.setString(2, customer.getLastName());
+			ps.setString(3, customer.getEmail());
 			ps.setString(4, customer.getPhone());
 			ps.execute();
 		}

@@ -3,80 +3,32 @@
  */
 package solutions.egen.rrs.model;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 /**
  * @author Kesava
  *
  */
 public class Reservation
 {
+	// Details provided by customer
 	private String customerEmail = "";
 	private String first_name = "";
 	private String last_name = "";
 	private String phone = "";
-	private int confNo = -1;
 	private String datetime = "";
 	private int partySize = 0;
+	private int rest_id = 1;
+	
+	//Details created in server
+	private int confNo = -1;
 	private int status = 0;
 	private int tableID = -1;
 	
-	/**
-	 * @param customerEmail
-	 * @param first_name
-	 * @param last_name
-	 * @param phone
-	 * @param confNo
-	 * @param date
-	 * @param time
-	 * @param partySize
-	 */
-	public Reservation(String customerEmail, String first_name, String last_name, 
-			String phone, int confNo, Timestamp time, int partySize) {
-		this.customerEmail = customerEmail;
-		this.first_name = first_name;
-		this.last_name = last_name;
-		this.phone = phone;
-		this.datetime = time;
-		this.partySize = partySize;
-	}
-
-	
-	/**
-	 * @param customerEmail
-	 * @param first_name
-	 * @param last_name
-	 * @param phone
-	 * @param confNo
-	 * @param date
-	 * @param time
-	 * @param partySize
-	 * @param status
-	 * @param tableID
-	 */
-	public Reservation(String customerEmail, String first_name, 
-			String last_name, String phone, int confNo,
-			Timestamp time, int partySize, int status, int tableID) {
-		this.customerEmail = customerEmail;
-		this.first_name = first_name;
-		this.last_name = last_name;
-		this.phone = phone;
-		this.confNo = confNo;
-		this.datetime = time;
-		this.partySize = partySize;
-		this.status = status;
-		this.tableID = tableID;
-	}
-
-
 	/**
 	 * @return the customerEmail
 	 */
 	public String getCustomerEmail() {
 		return customerEmail;
 	}
-
 
 
 	/**
@@ -155,14 +107,14 @@ public class Reservation
 	/**
 	 * @return the time
 	 */
-	public Timestamp getTime() {
+	public String getDatetime() {
 		return datetime;
 	}
 
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(Timestamp time) {
+	public void setDatetime(String time) {
 		this.datetime = time;
 	}
 
@@ -219,6 +171,17 @@ public class Reservation
 	public void setTableID(int tableID) {
 		this.tableID = tableID;
 	}
+
+
+	public int getRest_id() {
+		return rest_id;
+	}
+
+
+	public void setRest_id(int rest_id) {
+		this.rest_id = rest_id;
+	}
+	
 	
 	
 }
