@@ -188,6 +188,10 @@ public class Reservation
 
 	public void setRest_id(int rest_id) {
 		this.rest_id = rest_id;
+		
+		//TODO : hardcoded 
+		this.rest_id = 1;
+
 	}
 
 

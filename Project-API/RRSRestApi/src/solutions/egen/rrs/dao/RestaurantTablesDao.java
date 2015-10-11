@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Reservation;
 import solutions.egen.rrs.model.Restaurant;
 import solutions.egen.rrs.model.TableDetails;
@@ -30,8 +31,9 @@ public class RestaurantTablesDao
 	 * @param preparedStatement
 	 * @param resultset
 	 * @return Table details
+	 * @throws RRSException 
 	 */
-	public TableDetails getAvailableTable(Reservation reservation)
+	public TableDetails getAvailableTable(Reservation reservation) throws RRSException
 	{
 		TableDetails result = null;
 		Connection con = DBUtil.getConnection();
@@ -67,8 +69,8 @@ public class RestaurantTablesDao
 		}
 		catch (SQLException e)
 		{
-			//TODO add custom exception
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{

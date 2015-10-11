@@ -125,86 +125,86 @@ public class TableHelper
 		{
 			case 1:
 				
-				if( tablesAssigned.get(1) == null ||
-				tablesAssigned.get(1) < TABLES_SIZE_1)
+				if( (tablesAssigned.get(1) == null && TABLES_SIZE_1 > 0) ||
+					(tablesAssigned.get(1) != null && tablesAssigned.get(1) < TABLES_SIZE_1))
 				{
 					tableSize = 1;
 				}
-				else if( tablesAssigned.get(2) == null ||
-						tablesAssigned.get(2) < TABLES_SIZE_2)
+				else if( (tablesAssigned.get(2) == null && TABLES_SIZE_2 > 0 )||
+						(tablesAssigned.get(2) != null && tablesAssigned.get(2) < TABLES_SIZE_2))
 				{
 					tableSize = 2;
 				}
-				else if( tablesAssigned.get(4) == null ||
-						tablesAssigned.get(4) < TABLES_SIZE_4)
+				else if( (tablesAssigned.get(4) == null && TABLES_SIZE_4 > 0) ||
+						(tablesAssigned.get(4) != null && tablesAssigned.get(4) < TABLES_SIZE_4))
 				{
 					tableSize = 4;
 				}
-				else if( tablesAssigned.get(6) == null ||
-						tablesAssigned.get(6) < TABLES_SIZE_6)
+				else if( (tablesAssigned.get(6) == null && TABLES_SIZE_6 > 0) ||
+						(tablesAssigned.get(6) != null && tablesAssigned.get(6) < TABLES_SIZE_6))
 				{
 					tableSize = 6;
 				}
-				else if( tablesAssigned.get(8) == null ||
-						tablesAssigned.get(8) < TABLES_SIZE_4)
+				else if( (tablesAssigned.get(8) == null && TABLES_SIZE_8 > 0)||
+						(tablesAssigned.get(8) != null && tablesAssigned.get(8) < TABLES_SIZE_8))
 				{
 					tableSize = 8;
 				}
 				break;
 			case 2:
-				if( tablesAssigned.get(2) == null ||
-					tablesAssigned.get(2) < TABLES_SIZE_2)
+				if( (tablesAssigned.get(2) == null && TABLES_SIZE_2 > 0 )||
+						(tablesAssigned.get(2) != null && tablesAssigned.get(2) < TABLES_SIZE_2))
 				{
 					tableSize = 2;
 				}
-				else if( tablesAssigned.get(4) == null ||
-						tablesAssigned.get(4) < TABLES_SIZE_4)
+				else if( (tablesAssigned.get(4) == null && TABLES_SIZE_4 > 0) ||
+						(tablesAssigned.get(4) != null && tablesAssigned.get(4) < TABLES_SIZE_4))
 				{
 					tableSize = 4;
 				}
-				else if( tablesAssigned.get(6) == null ||
-						tablesAssigned.get(6) < TABLES_SIZE_6)
+				else if( (tablesAssigned.get(6) == null && TABLES_SIZE_6 > 0) ||
+						(tablesAssigned.get(6) != null && tablesAssigned.get(6) < TABLES_SIZE_6))
 				{
 					tableSize = 6;
 				}
-				else if( tablesAssigned.get(8) == null ||
-						tablesAssigned.get(8) < TABLES_SIZE_4)
+				else if( (tablesAssigned.get(8) == null && TABLES_SIZE_8 > 0)||
+						(tablesAssigned.get(8) != null && tablesAssigned.get(8) < TABLES_SIZE_8))
 				{
 					tableSize = 8;
 				}
 				break;
 			case 4:
-				if( tablesAssigned.get(4) == null ||
-					tablesAssigned.get(4) < TABLES_SIZE_4)
+				if( (tablesAssigned.get(4) == null && TABLES_SIZE_4 > 0) ||
+						(tablesAssigned.get(4) != null && tablesAssigned.get(4) < TABLES_SIZE_4))
 				{
 					tableSize = 4;
 				}
-				else if( tablesAssigned.get(6) == null ||
-						tablesAssigned.get(6) < TABLES_SIZE_6)
+				else if( (tablesAssigned.get(6) == null && TABLES_SIZE_6 > 0) ||
+						(tablesAssigned.get(6) != null && tablesAssigned.get(6) < TABLES_SIZE_6))
 				{
 					tableSize = 6;
 				}
-				else if( tablesAssigned.get(8) == null ||
-						tablesAssigned.get(8) < TABLES_SIZE_4)
+				else if( (tablesAssigned.get(8) == null && TABLES_SIZE_8 > 0)||
+						(tablesAssigned.get(8) != null && tablesAssigned.get(8) < TABLES_SIZE_8))
 				{
 					tableSize = 8;
 				}
 				break;
 			case 6:
-				if( tablesAssigned.get(6) == null ||
-					tablesAssigned.get(6) < TABLES_SIZE_6)
+				if( (tablesAssigned.get(6) == null && TABLES_SIZE_6 > 0) ||
+						(tablesAssigned.get(6) != null && tablesAssigned.get(6) < TABLES_SIZE_6))
 				{
 					tableSize = 6;
 				}
-				else if( tablesAssigned.get(8) == null ||
-						tablesAssigned.get(8) < TABLES_SIZE_4)
+				else if( (tablesAssigned.get(8) == null && TABLES_SIZE_8 > 0)||
+						(tablesAssigned.get(8) != null && tablesAssigned.get(8) < TABLES_SIZE_8))
 				{
 					tableSize = 8;
 				}
 				break;
 			case 8:
-				if( tablesAssigned.get(8) == null ||
-				tablesAssigned.get(8) < TABLES_SIZE_4)
+				if( (tablesAssigned.get(8) == null && TABLES_SIZE_8 > 0)||
+						(tablesAssigned.get(8) != null && tablesAssigned.get(8) < TABLES_SIZE_8))
 				{
 					tableSize = 8;
 				}

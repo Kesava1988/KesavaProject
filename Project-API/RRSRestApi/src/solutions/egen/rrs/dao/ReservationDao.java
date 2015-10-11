@@ -4,12 +4,9 @@
 package solutions.egen.rrs.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +70,8 @@ public class ReservationDao
 		}
 		catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -131,6 +128,7 @@ public class ReservationDao
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -149,8 +147,7 @@ public class ReservationDao
 	public Reservation createReservation(Reservation reservation) throws RRSException
 	{
 		reservation.validate();
-		//TODO : need to check the table status, available tables etc
-		//TODO : if status is success, put the confirmation to 1 else 0
+		
 		createNewReservation(reservation);
 		
 		//Now check for table and assign it
@@ -176,8 +173,9 @@ public class ReservationDao
 	/**
 	 * Create a new reservation
 	 * @param reservation
+	 * @throws RRSException 
 	 */
-	private void createNewReservation(Reservation reservation)
+	private void createNewReservation(Reservation reservation) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		int confNo;
@@ -207,6 +205,7 @@ public class ReservationDao
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -301,8 +300,9 @@ public class ReservationDao
 	/**
 	 * Update existing reservation in database
 	 * @param reservation
+	 * @throws RRSException 
 	 */
-	private void updateReservation(Reservation reservation)
+	private void updateReservation(Reservation reservation) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
@@ -327,11 +327,16 @@ public class ReservationDao
 			ps.setInt(4, status);
 			ps.setInt(5, tableID);
 			ps.setInt(6, confNo);
-			ps.execute();
+			int fail = ps.executeUpdate();
+			if(fail != 1)
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_CONF_NO));
+			}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -342,8 +347,9 @@ public class ReservationDao
 	/**
 	 * Delete a reservation in the database
 	 * @param reservation
+	 * @throws RRSException 
 	 */
-	public void deleteReservation(int conf_no)
+	public void deleteReservation(int conf_no) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
@@ -354,11 +360,16 @@ public class ReservationDao
 			//Then update based on the table availability.
 			ps = con.prepareStatement("DELETE from reservations WHERE conf_no = ?");
 			ps.setInt(1, conf_no);
-			ps.execute();
+			int fail = ps.executeUpdate();
+			if(fail != 1)
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_CONF_NO));
+			}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{

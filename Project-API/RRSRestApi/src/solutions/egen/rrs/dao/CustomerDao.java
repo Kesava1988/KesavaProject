@@ -10,9 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Customer;
 import solutions.egen.rrs.model.Reservation;
 import solutions.egen.rrs.utils.DBUtil;
+import solutions.egen.rrs.utils.ERROR_CODES;
+import solutions.egen.rrs.utils.ERROR_MESSSAGES;
 
 /**
  * @author Kesava
@@ -24,8 +27,9 @@ public class CustomerDao
 	 * Check if customer is already present in the database
 	 * if he is not present in the database, add him to database
 	 * @param reservation
+	 * @throws RRSException 
 	 */
-	public void addCustomer(Reservation reservation)
+	public void addCustomer(Reservation reservation) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		String customerEmail = reservation.getCustomerEmail();
@@ -47,8 +51,8 @@ public class CustomerDao
 		}
 		catch (SQLException e)
 		{
-			//TODO need custom exception
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -62,7 +66,7 @@ public class CustomerDao
 		}
 	}
 
-	private void createNewCustomer(Reservation reservation)
+	private void createNewCustomer(Reservation reservation) throws RRSException
 	{
 		String customerEmail = reservation.getCustomerEmail();
 		String first_name = reservation.getFirst_name();
@@ -82,8 +86,9 @@ public class CustomerDao
 	/**
 	 * Get all customer from database
 	 * @return
+	 * @throws RRSException 
 	 */
-	public List<Customer> getAllCustomers()
+	public List<Customer> getAllCustomers() throws RRSException
 	{
 		List<Customer> result = null;
 		Connection con = DBUtil.getConnection();
@@ -118,8 +123,8 @@ public class CustomerDao
 		}
 		catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -132,8 +137,9 @@ public class CustomerDao
 	 * Find customer from database based on email
 	 * @param email
 	 * @return
+	 * @throws RRSException 
 	 */
-	public Customer getCustomer(String email)
+	public Customer getCustomer(String email) throws RRSException
 	{
 		Customer result = null;
 		Connection con = DBUtil.getConnection();
@@ -149,7 +155,7 @@ public class CustomerDao
 			ps.setString(1, email);
 			rs = ps.executeQuery();
 			
-			while(rs.next())
+			if(rs.next())
 			{
 				first_name = rs.getString("first_name");
 				last_name = rs.getString("last_name");
@@ -162,10 +168,16 @@ public class CustomerDao
 				result.setLastName(last_name);
 				result.setPhone(phone);
 			}
+			else
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(
+						ERROR_CODES.INVALID_CUST_EMAIL));
+			}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -178,8 +190,9 @@ public class CustomerDao
 	/**
 	 * Create a new customer
 	 * @param customer
+	 * @throws RRSException 
 	 */
-	public Customer createCustomer(Customer customer)
+	public Customer createCustomer(Customer customer) throws RRSException
 	{		
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
@@ -198,8 +211,8 @@ public class CustomerDao
 		}
 		catch (SQLException e)
 		{
-			//TODO need custom exception
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -213,8 +226,9 @@ public class CustomerDao
 	 * Edit the customer in database
 	 * @param customer
 	 * @return
+	 * @throws RRSException 
 	 */
-	public Customer editCustomer(Customer customer)
+	public Customer editCustomer(Customer customer) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
@@ -229,12 +243,17 @@ public class CustomerDao
 			ps.setString(2, customer.getLastName());
 			ps.setString(3, customer.getPhone());
 			ps.setString(4, customer.getEmail());
-			ps.execute();
+			int status = ps.executeUpdate();
+			if(status != 1)
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(
+						ERROR_CODES.INVALID_CUST_EMAIL));
+			}
 		}
 		catch (SQLException e)
 		{
-			//TODO need custom exception
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{
@@ -247,8 +266,9 @@ public class CustomerDao
 	/**
 	 * Delete a customer from database
 	 * @param customer
+	 * @throws RRSException 
 	 */
-	public void deleteCustomer(String email)
+	public void deleteCustomer(String email) throws RRSException
 	{
 		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
@@ -259,12 +279,17 @@ public class CustomerDao
 			ps = con.prepareStatement("DELETE FROM customer_details WHERE "
 					+ "email = ?");
 			ps.setString(1, email);
-			ps.execute();
+			int status = ps.executeUpdate();
+			if(status != 1)
+			{
+				throw new RRSException(ERROR_MESSSAGES.getErrorMessage(
+						ERROR_CODES.INVALID_CUST_EMAIL));
+			}
 		}
 		catch (SQLException e)
 		{
-			//TODO need custom exception
 			e.printStackTrace();
+			throw new RRSException(e.getMessage(), e.getCause());
 		}
 		finally
 		{

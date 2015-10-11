@@ -6,6 +6,7 @@ package solutions.egen.rrs.utils;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import solutions.egen.rrs.dao.RestaurantDao;
 import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Restaurant;
 
@@ -88,6 +89,12 @@ public class ValidationUtils
 	 */
 	public static void validateReservationtime(String datetime) throws RRSException
 	{
+		if(!Restaurant.isValuesSet())
+		{
+			RestaurantDao rDao = new RestaurantDao();
+			rDao.assignStaticValues();
+		}
+		
 		GregorianCalendar now = new GregorianCalendar();
 		
 		GregorianCalendar openTime = validateDatetime(Restaurant.getOPEN_TIME());
@@ -106,7 +113,7 @@ public class ValidationUtils
 			openTime.set(yr, month, date);
 			closeTime.set(yr, month, date);
 			
-			if(openTime.before(reservationTime) && closeTime.after(reservationTime))
+			if( ( openTime.before(reservationTime) || openTime.equals(reservationTime) )&& closeTime.after(reservationTime))
 			{
 				return; //Return if everything is OK;
 			}
@@ -128,6 +135,22 @@ public class ValidationUtils
 		{
 			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_PARTY_SIZE));
 		}
+	}
+	
+	
+	/**
+	 * Number of tables has to be either 0 or positive integer
+	 * @param table_1
+	 * @throws RRSException 
+	 */
+	public static void validateTableSize(int noOfTables) throws RRSException
+	{
+		if(noOfTables < 0)
+		{
+			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(
+					ERROR_CODES.INVALID_NO_OF_TABLES));
+		}
+		
 	}
 
 }

@@ -13,7 +13,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +23,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import solutions.egen.rrs.dao.CustomerDao;
 import solutions.egen.rrs.dao.ReservationDao;
+import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Reservation;
+import solutions.egen.rrs.utils.ERROR_CODES;
+import solutions.egen.rrs.utils.ERROR_MESSSAGES;
 
 /**
  * @author Kesava
@@ -46,8 +51,15 @@ public class ReservationController
 			})
 	public List<Reservation> getAllReservations()
 	{
-		ReservationDao rDao = new ReservationDao();
-		return rDao.getAllReservations();
+		try
+		{
+			ReservationDao rDao = new ReservationDao();
+			return rDao.getAllReservations();
+		}
+		catch (RRSException e)
+		{
+			throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	/**
@@ -67,8 +79,22 @@ public class ReservationController
 			})
 	public Reservation getReservation(@PathParam("conf_no") int conf_no)
 	{
-		ReservationDao rDao = new ReservationDao();
-		return rDao.getReservation(conf_no);
+		try
+		{
+			ReservationDao rDao = new ReservationDao();
+			return rDao.getReservation(conf_no);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_CONF_NO)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 	
 	/**
@@ -88,11 +114,18 @@ public class ReservationController
 			})
 	public Reservation createReservation(Reservation reservation)
 	{
-		//Add the customer into database
-		CustomerDao custDao = new CustomerDao();
-		custDao.addCustomer(reservation);
-		ReservationDao rDao = new ReservationDao();
-		return rDao.createReservation(reservation);
+		try
+		{
+			//Add the customer into database
+			CustomerDao custDao = new CustomerDao();
+			custDao.addCustomer(reservation);
+			ReservationDao rDao = new ReservationDao();
+			return rDao.createReservation(reservation);
+		}
+		catch (RRSException e)
+		{
+			throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	/**
@@ -136,8 +169,15 @@ public class ReservationController
 			})
 	public Reservation editReservation(Reservation reservation)
 	{
-		ReservationDao rDao = new ReservationDao();
-		return rDao.editReservation(reservation);
+		try
+		{
+			ReservationDao rDao = new ReservationDao();
+			return rDao.editReservation(reservation);
+		}
+		catch (RRSException e)
+		{
+			throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	
@@ -158,7 +198,21 @@ public class ReservationController
 			})
 	public void deleteReservation(@PathParam("conf_no") int conf_no)
 	{
-		ReservationDao rDao = new ReservationDao();
-		rDao.deleteReservation(conf_no);
+		try
+		{
+			ReservationDao rDao = new ReservationDao();
+			rDao.deleteReservation(conf_no);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_CONF_NO)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 }

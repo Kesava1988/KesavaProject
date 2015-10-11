@@ -13,14 +13,19 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import solutions.egen.rrs.dao.CustomerDao;
+import solutions.egen.rrs.exceptions.RRSException;
 import solutions.egen.rrs.model.Customer;
+import solutions.egen.rrs.utils.ERROR_CODES;
+import solutions.egen.rrs.utils.ERROR_MESSSAGES;
 
 /**
  * @author Kesava
@@ -44,8 +49,15 @@ public class CustomerController
 			})
 	public List<Customer> getAllCustomers()
 	{
-		CustomerDao custDao = new CustomerDao();
-		return custDao.getAllCustomers();
+		try
+		{
+			CustomerDao custDao = new CustomerDao();
+			return custDao.getAllCustomers();
+		}
+		catch (RRSException e)
+		{
+			throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	/**
@@ -65,13 +77,28 @@ public class CustomerController
 			})
 	public Customer getCustomer(@PathParam("email") String email)
 	{
-		CustomerDao custDao = new CustomerDao();
-		return custDao.getCustomer(email);
+		try
+		{
+			CustomerDao custDao = new CustomerDao();
+			return custDao.getCustomer(email);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_CUST_EMAIL)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 	
 	/**
 	 * Create a new customer
 	 * Returns customer with confirmation number and status
+	 * @throws RRSException 
 	 */
 	@POST
 	@Path("/newcustomer")
@@ -86,9 +113,16 @@ public class CustomerController
 			})
 	public Customer createCustomer(Customer customer)
 	{
-		//Add the customer into database
-		CustomerDao custDao = new CustomerDao();
-		return custDao.createCustomer(customer);
+		try
+		{
+			//Add the customer into database
+			CustomerDao custDao = new CustomerDao();
+			return custDao.createCustomer(customer);
+		} 
+		catch (RRSException e)
+		{
+			throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	/**
@@ -111,8 +145,22 @@ public class CustomerController
 			})
 	public Customer editCustomer(Customer customer)
 	{
-		CustomerDao custDao = new CustomerDao();
-		return custDao.editCustomer(customer);
+		try
+		{
+			CustomerDao custDao = new CustomerDao();
+			return custDao.editCustomer(customer);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_CUST_EMAIL)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 	
 	
@@ -133,7 +181,21 @@ public class CustomerController
 			})
 	public void deleteCustomer(@PathParam("email") String email)
 	{
-		CustomerDao custDao = new CustomerDao();
-		custDao.deleteCustomer(email);
+		try
+		{
+			CustomerDao custDao = new CustomerDao();
+			custDao.deleteCustomer(email);
+		}
+		catch (RRSException e)
+		{
+			if(ERROR_MESSSAGES.lastKnownError == ERROR_CODES.INVALID_CUST_EMAIL)
+			{
+				throw new WebApplicationException(e.getMessage(), Status.NOT_FOUND);
+			}
+			else
+			{
+				throw new WebApplicationException(e.getMessage(), Status.INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 }

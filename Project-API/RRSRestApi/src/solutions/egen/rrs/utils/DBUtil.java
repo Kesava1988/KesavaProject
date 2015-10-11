@@ -52,12 +52,6 @@ public class DBUtil
 		return con;
 	}
 
-	public static PreparedStatement getPreparedStatement()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public static void releaseResources(Connection con, PreparedStatement ps, ResultSet rs)
 	{
 		try {

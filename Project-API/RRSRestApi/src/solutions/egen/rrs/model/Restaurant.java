@@ -42,6 +42,15 @@ public class Restaurant
 	private static String OPEN_TIME = "2015-10-10-10-00";
 	
 	private static String CLOSE_TIME = "2015-10-10-20-00";
+	
+	private static boolean valuesSet = false;
+
+	/**
+	 * @return the valuesSet
+	 */
+	public static boolean isValuesSet() {
+		return valuesSet;
+	}
 
 	/**
 	 * @return the name
@@ -295,6 +304,7 @@ public class Restaurant
 	 */
 	public static void setAUTO_ASSIGN(int aUTO_ASSIGN) {
 		AUTO_ASSIGN = aUTO_ASSIGN;
+		valuesSet = true;
 	}
 
 	/**
@@ -326,6 +336,16 @@ public class Restaurant
 		{
 			throw new RRSException(ERROR_MESSSAGES.getErrorMessage(ERROR_CODES.INVALID_DATE_TIME));
 		}
+	}
+
+	public void validate() throws RRSException
+	{
+		ValidationUtils.validateOpenCloseTimes(this.open_time, this.close_time);
+		ValidationUtils.validateTableSize(table_1);
+		ValidationUtils.validateTableSize(table_2);
+		ValidationUtils.validateTableSize(table_4);
+		ValidationUtils.validateTableSize(table_6);
+		ValidationUtils.validateTableSize(table_8);
 	}
 	
 	

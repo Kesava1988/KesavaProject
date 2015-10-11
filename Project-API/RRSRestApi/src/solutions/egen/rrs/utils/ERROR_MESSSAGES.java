@@ -24,6 +24,12 @@ public class ERROR_MESSSAGES
 	private static final String INVALID_PARTY_SIZE_MESSAGE = "Party size should be a positive integer value";
 
 	private static final String INVALID_CONF_NO_MESSAGE = "There is no reservation with the provided confirmation number";
+
+	private static final String INVALID_NO_OF_TABLES_MESSAGE = "Number of tables cannot be a negative value";
+
+	private static final String INVALID_OWNER_MESSAGE = "Owner with that email id doesn't exist";
+
+	private static final String INVALID_CUST_EMAIL_MESSAGE = "Customer with that email doesn't exist";
 	
 	
 	public static String getErrorMessage(ERROR_CODES errorCode)
@@ -44,6 +50,12 @@ public class ERROR_MESSSAGES
 				return INVALID_PARTY_SIZE_MESSAGE;
 			case INVALID_CONF_NO:
 				return INVALID_CONF_NO_MESSAGE;
+			case INVALID_NO_OF_TABLES:
+				return INVALID_NO_OF_TABLES_MESSAGE;
+			case INVALID_OWNER:
+				return INVALID_OWNER_MESSAGE;
+			case INVALID_CUST_EMAIL:
+				return INVALID_CUST_EMAIL_MESSAGE;
 			default:
 				return "NOT A VALID ERROR CODE";
 		}
